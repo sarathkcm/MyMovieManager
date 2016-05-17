@@ -1,2 +1,2 @@
 # My Movie Manager
-Cross-platform Applicaion for managing your movies and TV seris
+Cross-platform Application for managing your movies and TV series.
