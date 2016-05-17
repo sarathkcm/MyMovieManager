@@ -1,0 +1,49 @@
+<div ng-controller="ThumbnailViewController" class="whole-screen" style="overflow:hidden;">
+    <div>
+        <div style="width:66%;float:left;height:100%;position:relative">
+            <div style="height:40px;background-color:blue;">ToolBar</div>
+            <div style="overflow:scroll;height:95%;">
+                <div ng-repeat="media in Data.DisplayedMedia " class="poster-thumb " ng-class="media.$$Selected? 'highlighted': '' " ng-click="SelectMedia(media) ">
+                    <div>
+                        <div>
+                            <img ng-src="{{media.postersmall?media.$$Folder.Path + path.sep + media.postersmall:
+            './images/defaultFolderSmall.jpg'}} "></img>
+                        </div>
+                        <div class="label ">
+                            <span class="bgShade "></span>
+                            <div style="position:absolute;bottom:5px;right:5px;left:5px;font-size:12px;color:white;padding:0px;text-align:center;vertical-align:middle ">{{media.title || media.filename}}{{media.year?' ['+media.year+']':''}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width:34%;float:right;height:100% ">
+            <div class="moviePosterDisplay" style='background-image: url("{{"file:///"+(SelectedMedia.$$Folder.Path + path.sep + SelectedMedia.poster | escape)}}");' ng-class="SelectedMedia.$$ShowPoster? 'opac': 'translucent'">
+            </div>
+            <div>
+                <br/>
+                <div ng-show="!SelectedMedia.$$ShowPoster">
+                <div style="text-align:center;font-size:24px;font-weight:bold"> {{SelectedMedia.title}}</div>
+                <div style="text-align:center;font-size:15px;font-weight:bold">{{SelectedMedia.year}}</div>
+                <br/>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMedia.synopsys}}<span class="fa fa-quote-right super-script"></span></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Directed by: </b><tag-display ng-model="SelectedMedia.directors" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Runtime: </b>{{SelectedMedia.duration}}</div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Languages: </b><tag-display ng-model="SelectedMedia.languages" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Countries: </b><tag-display ng-model="SelectedMedia.country" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Genres: </b><tag-display ng-model="SelectedMedia.genres" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Cast: </b><tag-display ng-model="SelectedMedia.cast" on-click="searchCast"></tag-display></div>
+                </div>
+                
+                <div class="circle-tool-container" >
+                    <div class="circle-tool circle-tool4"><span class="fa fa-folder"></span>  </div>
+                    <div class="circle-tool circle-tool3"><span class="fa fa-play"></span>  </div>
+                    <div class="circle-tool circle-tool2" ng-click="ShowPoster()"><span class="fa fa-eye"></span>  </div>
+                    <div class="circle-tool circle-tool1"><span class="fa fa-plus"></span>  </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,89 @@
+<div ng-controller="StartupController" class="whole-screen" ng-init="Initialize()" ng-show="IsFirstStart">
+    <div style="width:100%;height:100%;background-color:black">
+        <div style="width:60%;height:70%;position:absolute;top:13%;left:20%; background-color:white;border-radius:8px;border:1px solid blue;padding:10px;">
+
+            <div ng-show="WizardStep==0" style="padding:0;margin:0;">
+                <div style="width:150px;border:1px solid;position:absolute;margin:10px;top:0px;bottom:0px;left:0px;">
+                </div>
+                <div style="position:absolute;margin:0px;top:0px;bottom:0px;right:0px;left:170px;">
+                    <h2>Get set up with My Movie Manager</h2>
+                    <div>This wizard will help you configure My Movie Manager for the first time. Click Next to Proceed.</div>
+
+                </div>
+                <div style="position:absolute; bottom:10px;left:180px;right:10px;">
+                    <button style="float:right;margin:5px;" ng-click="SetPage(1)">Next</button>
+                </div>
+            </div>
+
+            <div ng-show="WizardStep==1" style="padding:0;margin:0;">
+                <div style="position:absolute;margin:0px;top:0px;bottom:0px;left:0px;right:0px; margin-right:10px;margin-left:10px;">
+                    <h2>&nbsp;Tell My Movie Manager where to look for movies/ TV Series</h2>
+                    <div class="well" style="position:absolute;bottom:50px;top:70px;right:10px;left:10px;overflow-y:auto;">
+                        <div class="datagrid">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="60%"> Folder</th>
+                                        <th>Look inside sub-folders?</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="folder in Folders">
+                                        <td>{{folder.Path}}</td>
+                                        <td style="text-align:center">
+                                            <input type="checkbox" ng-model="folder.Recursive"></input>
+                                        </td>
+                                        <td><button ng-click="RemoveFolder(newFolder)" style="width:70px;">Remove</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <input style="width:100%" type="text" placeholder="Click to choose a folder" ng-model="newFolder.Path" ng-readonly="true"
+                                                ng-click="ChooseFolder(newFolder)" required></input>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <input type="checkbox" ng-model="newFolder.Recursive"></input>
+                                        </td>
+                                        <td><button ng-click="AddFolder(newFolder)" style="width:70px;">Add</button></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div style="position:absolute; bottom:10px;left:180px;right:10px;">
+                    <button style="float:right;margin:5px;" ng-disabled="!Folders.length" ng-click="SaveFolderListToFile();SetPage(2);">Next</button>
+                    <button style="float:right;margin:5px;" ng-click="SetPage(0)">Previous</button>
+                </div>
+            </div>
+            
+           
+            <div ng-show="WizardStep==2" style="padding:0;margin:0;">
+                <div style="position:absolute;margin:20px;top:0px;bottom:0px;left:0px;right:0px;">
+                    <h2>That will be all, Captain!...</h2>
+                    <div>You have provided enough information needed by My Movie Manager. On click of Next button, My Movie Manager will scan the folders you have selected to find movies/ TV series files. Please be patient.</div>
+
+                </div>
+                <div style="position:absolute; bottom:10px;left:180px;right:10px;">
+                    <button style="float:right;margin:5px;" ng-click="SetPage(3);BeginScan();">Next</button>
+                    <button style="float:right;margin:5px;" ng-click="SetPage(1)">Previous</button>
+                </div>
+            </div>
+            
+            <div ng-show="WizardStep==3" style="padding:0;margin:0;">
+                <div style="position:absolute;margin:20px;top:0px;bottom:0px;left:0px;right:0px;">
+                    <h2>Please wait while My Movie Manager searches for files!...</h2>
+
+                </div>
+                <div style="position:absolute; bottom:10px;left:180px;right:10px;">
+                    <button style="float:right;margin:5px;" ng-disabled="!ScanFinished" ng-click="Finalize();">Finish</button>
+                    <button style="float:right;margin:5px;" ng-click="SetPage(1)">Previous</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
