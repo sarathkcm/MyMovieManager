@@ -7,7 +7,7 @@
   "main": "app.js",
   "scripts": {
     "start": "electron .",
-    "prestart": "babel ./js/sources --out-file ./js/script.js"
+    "build": "babel ./js/sources --out-file ./js/script.js"
   },
   "dependencies": {
     "opensubtitles-api": "^3.0.0",
@@ -19,7 +19,6 @@
     "themoviedbclient": "^0.1.0"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
     "babel-cli": "^6.8.0",
     "babel-plugin-syntax-async-functions": "^6.8.0",
     "babel-plugin-transform-regenerator": "^6.8.0",
