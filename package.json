@@ -1,5 +1,5 @@
 {
-    "name": "mymoviemanager",
+    "name": "MyMovieManager",
     "version": "0.0.0",
     "author": "Sarath KCM",
     "displayName": "My Movie Manager",
@@ -26,10 +26,10 @@
         "babel-plugin-syntax-async-functions": "^6.8.0",
         "babel-plugin-transform-regenerator": "^6.8.0"
     },
-    "repository": "https://github.com/sarathkcm/mymoviemanager.git",
+    "repository": "https://github.com/sarathkcm/MyMovieManager.git",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/sarathkcm/mymoviemanager/issues"
+        "url": "https://github.com/sarathkcm/MyMovieManager/issues"
     },
-    "homepage": "mymoviemanager.in"
+    "homepage": "http://mymoviemanager.in"
 }
