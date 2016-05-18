@@ -76,7 +76,7 @@
                         var mediaFolder = path.dirname(media);
                         var posterFile = getFileIfExists(path.join(mediaFolder, path.sep, 'folder.jpg')) || getFileIfExists(path.join(mediaFolder, path.sep, 'cover.jpg'));
                         var backdropFile = getFileIfExists(path.join(mediaFolder, path.sep, 'backdrop.jpg'));
-                        var posterSmallFile = path.join(path.dirname(posterFile), path.sep, 'folderSmall.jpg');
+                        var posterSmallFile = path.join(mediaFolder, path.sep, 'folderSmall.jpg');
 
                         var mediaFile = {
                             filename: relativeFileName,

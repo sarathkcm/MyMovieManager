@@ -1,7 +1,10 @@
 module.exports = function (grunt) {
 
-    grunt.initConfig({
+    var gruntConfig = {
         concat: {
+            options: {
+                sourceMap: true
+            },
             dist: {
                 src: [
                     'js/sources/Global/modules.js',
@@ -12,7 +15,7 @@ module.exports = function (grunt) {
                     'js/sources/Services/**/*.js',
                     'js/sources/Controllers/**/*.js',
                     'js/sources/Directives/**/*.js',
-                    ],
+                ],
                 dest: 'js/dist/combined.js'
             }
         },
@@ -33,10 +36,16 @@ module.exports = function (grunt) {
                 }
             }
         }
-    });
+    };
+
+    grunt.initConfig(gruntConfig);
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-babel');
-    grunt.registerTask('default', ['concat', 'babel']);
 
+    grunt.task.registerTask("configureBabelSourceMap", "configures babel source map", function () {
+        gruntConfig.babel.options.inputSourceMap = grunt.file.readJSON('js/dist/combined.js.map');
+    });
+    
+    grunt.registerTask('default', ['concat','configureBabelSourceMap', 'babel']);
 };
