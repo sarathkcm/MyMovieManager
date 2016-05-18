@@ -1,4 +1,4 @@
 node_modules/*
 npm-debug.log
 .vscode/*
-js/script.js
+js/dist/*
