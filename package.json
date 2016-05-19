@@ -7,7 +7,8 @@
   "main": "app.js",
   "scripts": {
     "start": "electron .",
-    "build": "grunt"
+    "build-all": "grunt",
+    "build-css":"grunt concat:css"
   },
   "dependencies": {
     "opensubtitles-api": "^3.0.0",

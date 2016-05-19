@@ -5,7 +5,7 @@ module.exports = function (grunt) {
             options: {
                 sourceMap: true
             },
-            dist: {
+            js: {
                 src: [
                     'js/sources/Global/modules.js',
                     'js/sources/Global/settings.js',
@@ -17,6 +17,12 @@ module.exports = function (grunt) {
                     'js/sources/Directives/**/*.js',
                 ],
                 dest: 'js/dist/combined.js'
+            },
+             css: {
+                src: [
+                    'css/sources/**/*.css'
+                ],
+                dest: 'css/dist/combined.css'
             }
         },
         babel: {
@@ -47,5 +53,5 @@ module.exports = function (grunt) {
         gruntConfig.babel.options.inputSourceMap = grunt.file.readJSON('js/dist/combined.js.map');
     });
     
-    grunt.registerTask('default', ['concat','configureBabelSourceMap', 'babel']);
+    grunt.registerTask('default', ['concat:js','concat:css','configureBabelSourceMap', 'babel']);
 };

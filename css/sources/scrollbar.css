@@ -1,0 +1,18 @@
+::-webkit-scrollbar{
+     width: 10px;
+}
+::-webkit-scrollbar-track{
+     box-shadow: inset 0 0 2px rgba(0,0,0,0); 
+}
+::-webkit-scrollbar-track-piece{
+    background:transparent;
+    border-color: grey;
+}
+::-webkit-scrollbar-thumb {
+    background: lightslategrey;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0);  
+    border:1px solid rgba(255,255,255,0);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: transparent; 
+}
