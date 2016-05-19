@@ -39,8 +39,18 @@
                     var criteria = $scope.FilterCriteria[key];
                     mediaList = criteria(mediaList);
                 }
-                $scope.Data.DisplayedMedia = null;
-                $scope.Data.DisplayedMedia = mediaList;
+                mediaList.forEach(function(element) {
+                    var movie =  $scope.Data.DisplayedMedia.find(m=> m.$$Folder.Path+ m.filename === element.$$Folder.Path+element.filename);
+                    if(movie)
+                    {
+                        _(movie).extend(element);
+                        element= movie;
+                    }
+                    else
+                    {
+                        $scope.Data.DisplayedMedia.push(element);
+                    }
+                }, this);
             };
         });
 })();
