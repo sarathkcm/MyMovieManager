@@ -16,9 +16,7 @@
                 }
                 $scope.Data.AllMedia = MediaService.GetMediaList();
                 $scope.RefreshMediaDisplay();
-
-
-                $timeout(triggerScanningOnStartup, 3000)
+                $timeout(triggerScanningOnStartup, 2000)
                 return;
             };
 
@@ -28,19 +26,30 @@
             };
 
             var triggerScanningOnStartup = function () {
-                MediaService.ScanMediaFiles(function (params) {
+                MediaService.ScanMediaFiles(function () {
                     var allMedia = MediaService.GetMediaList();
                     var notUpdatedMediaList = _(allMedia).filter(media => !media.isupdatedonce);
                     $scope.LoadMediaListFromDisk();
 
-                    var save = function () {
+                    var save = function (listOfUpdatedMovies) {
+                        listOfUpdatedMovies.forEach(function (element) {
+                            var movie = allMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
+                            if (movie) {
+                                _(movie).extend(element);
+                                element = movie;
+                            }
+                            else {
+                                allMedia.push(element);
+                            }
+                        }, this);
+
                         var groups = _(allMedia).groupBy(media => media.$$Folder.Path);
                         _(_(groups).keys()).each(function (key) {
                             MediaService.SaveMediaListToFile(key, groups[key])
                         });
                         $scope.LoadMediaListFromDisk();
                     };
-                    MediaService.UpdateMediaMetaData(notUpdatedMediaList, $scope.ScanProgress, save);
+                    MediaService.UpdateMediaMetaData(notUpdatedMediaList, save);
                 });
 
             };

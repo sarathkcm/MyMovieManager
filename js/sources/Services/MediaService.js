@@ -67,6 +67,9 @@
                     fs.mkdirSync(dataFolder);
                     fs.writeFileSync(dataFilePath, '[]');
                 }
+                if (!getFileIfExists(dataFilePath)) {
+                    fs.writeFileSync(dataFilePath, '[]');
+                }
 
                 var mediaFilesInfo = GetJSONFromFile(dataFilePath);
 
@@ -76,7 +79,7 @@
                         var mediaFolder = path.dirname(media);
                         var posterFile = getFileIfExists(path.join(mediaFolder, path.sep, 'folder.jpg')) || getFileIfExists(path.join(mediaFolder, path.sep, 'cover.jpg'));
                         var backdropFile = getFileIfExists(path.join(mediaFolder, path.sep, 'backdrop.jpg'));
-                        var posterSmallFile = path.join(mediaFolder, path.sep, 'folderSmall.jpg');
+                        var posterSmallFile = getFileIfExists(path.join(mediaFolder, path.sep, 'folderSmall.jpg'));
 
                         var mediaFile = {
                             filename: relativeFileName,
@@ -92,14 +95,10 @@
                             mediaFile.title = title[1] || title[4];
                             mediaFile.year = title[2] || title[3];
                         }
-
                         mediaFilesInfo.push(mediaFile);
-
-
                     }
                 })
                 SaveJSONToFile(path.join(dataFolder, '\data.json'), mediaFilesInfo);
-
             };
 
             this.GetMediaList = function () {
@@ -140,79 +139,23 @@
                 if (callBack) callBack();
             };
 
-            var getImdbImageUrl = function (url, height, width) {
-                var w = width ? '._SX' + width : '';
-                var h = height ? '._SY' + height : '';
-                return url.split('._')[0] + "._V1" + h + w + ".jpg";
-            };
 
-            async function OsIdentifyAndUpdate(mediaList, progressObj, callBack) {
-                var OS = require('opensubtitles-api');
-                var OpenSubtitles = new OS({
-                    'useragent': 'OSTestUserAgent',
-                    'username': '',
-                    'password': '',
-                    'ssl': false
+            this.UpdateMediaMetaData = function (mediaList, callBack) {
+                const BrowserWindow = require('electron').remote.BrowserWindow
+                const ipcRenderer = require('electron').ipcRenderer
+                const path = require('path')
+                const currentWindowId = BrowserWindow.getFocusedWindow().id
+                const processorPath = 'file://' + path.join(__dirname, '/html/Processors/IdentifyMovies.html')
+                let win = new BrowserWindow({ width: 400, height: 400, show: false })
+                win.loadURL(processorPath)
+
+                win.webContents.on('did-finish-load', function () {
+                    win.webContents.send('identify-movies', JSON.stringify(mediaList), currentWindowId)
                 });
-                for (var ind = 0, len = mediaList.length; ind < len; ind++) {
 
-                    try {
-                        var jimp = require('jimp');
-                        var data = await OpenSubtitles.identify({
-                            path: path.join(mediaList[ind].$$Folder.Path, path.sep, mediaList[ind].filename),
-                            extend: true
-                        });
-
-
-                        mediaList[ind].type = data.type;
-                        _(mediaList[ind]).extend(data.metadata);
-
-                        if (!mediaList[ind].poster && data.metadata.cover) {
-                            var posterUrl = getImdbImageUrl(data.metadata.cover, 1024);
-                            var posterSmallUrl = getImdbImageUrl(data.metadata.cover, 180);
-
-                            var folderName = path.dirname(path.join(mediaList[ind].$$Folder.Path, path.sep, mediaList[ind].filename));
-
-                            var posterFileName = path.join(folderName, path.sep, 'folder.jpg');
-                            var posterSmallFileName = path.join(folderName, path.sep, 'folderSmall.jpg');
-                            request(posterUrl).pipe(fs.createWriteStream(posterFileName));
-                            request(posterSmallUrl).pipe(fs.createWriteStream(posterSmallFileName));
-                            mediaList[ind].poster = getRelativeFilePath(mediaList[ind].$$Folder.Path, posterFileName);
-                            mediaList[ind].postersmall = getRelativeFilePath(mediaList[ind].$$Folder.Path, posterSmallFileName);
-                        }
-                        else if (mediaList[ind].poster && !mediaList[ind].postersmall) {
-                            var posterBigFileName = path.join(mediaList[ind].$$Folder.Path, path.sep, mediaList[ind].poster);
-                            var smallFileName = path.join(path.dirname(posterBigFileName), path.sep, 'folderSmall.jpg');
-                            var img = await jimp.read(posterBigFileName)
-                            var resizedImg = await img.resize(jimp.AUTO, 180);
-                            await resizedImg.write(smallFileName);
-
-                            mediaList[ind].postersmall = getRelativeFilePath(mediaList[ind].$$Folder.Path, smallFileName);
-                        }
-
-                        mediaList[ind].isupdatedonce = true;
-                    } catch (ex) {
-                        if (mediaList[ind].poster && !mediaList[ind].postersmall) {
-                            var posterBigFileName = path.join(mediaList[ind].$$Folder.Path, path.sep, mediaList[ind].poster);
-                            var smallFileName = path.join(path.dirname(posterBigFileName), path.sep, 'folderSmall.jpg');
-                            var img = await jimp.read(posterBigFileName)
-                            var resizedImg = await img.resize(jimp.AUTO, 180);
-                            await resizedImg.write(smallFileName);
-
-                            mediaList[ind].postersmall = getRelativeFilePath(mediaList[ind].$$Folder.Path, smallFileName);
-                        }
-                        console.log(ex);
-                    }
-                }
-                callBack();
-            }
-
-
-
-            this.UpdateMediaMetaData = function (mediaList, progressObj, callBack) {
-
-                OsIdentifyAndUpdate(mediaList, progressObj, callBack);
-
+                ipcRenderer.on('identify-movies-completed', function (event, output) {
+                    callBack(JSON.parse(output));
+                });
             };
         });
 

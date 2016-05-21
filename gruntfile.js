@@ -18,7 +18,7 @@ module.exports = function (grunt) {
                 ],
                 dest: 'js/dist/combined.js'
             },
-             css: {
+            css: {
                 src: [
                     'css/sources/**/*.css'
                 ],
@@ -26,21 +26,45 @@ module.exports = function (grunt) {
             }
         },
         babel: {
-            options: {
-                sourceMap: true,
-                presets: [
-                    "es2015"
-                ],
-                plugins: [
-                    "syntax-async-functions",
-                    "transform-regenerator"
+            angular: {
+                options: {
+                    sourceMap: true,
+                    presets: [
+                        "es2015"
+                    ],
+                    plugins: [
+                        "syntax-async-functions",
+                        "transform-regenerator"
+                    ]
+                },
+                files: [
+                    {
+                        'js/dist/compiled.js': 'js/dist/combined.js'
+                    }
                 ]
             },
-            dist: {
-                files: {
-                    'js/dist/compiled.js': 'js/dist/combined.js'
-                }
+            processors: {
+                options: {
+                    sourceMap: true,
+                    presets: [
+                        "es2015"
+                    ],
+                    plugins: [
+                        "syntax-async-functions",
+                        "transform-regenerator"
+                    ]
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'js/Sources/Processors/',
+                        src: ['*.js'],
+                        dest: 'js/dist/Processors/'
+                    }
+                ]
+
             }
+
         }
     };
 
@@ -50,8 +74,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-babel');
 
     grunt.task.registerTask("configureBabelSourceMap", "configures babel source map", function () {
-        gruntConfig.babel.options.inputSourceMap = grunt.file.readJSON('js/dist/combined.js.map');
+        gruntConfig.babel.angular.options.inputSourceMap = grunt.file.readJSON('js/dist/combined.js.map');
     });
-    
-    grunt.registerTask('default', ['concat:js','concat:css','configureBabelSourceMap', 'babel']);
+
+    grunt.registerTask('default', ['concat:js', 'concat:css', 'configureBabelSourceMap', 'babel']);
 };
