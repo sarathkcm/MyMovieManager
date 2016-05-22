@@ -60,8 +60,7 @@
                 $scope.WizardStep = page;
             };
             $scope.ChooseFolder = function (folder) {
-                var remote = require('remote');
-                var dialog = remote.require('dialog');
+                var dialog = require('electron').remote.dialog;
                 var paths = dialog.showOpenDialog({
                     properties: ['openDirectory']
                 });
