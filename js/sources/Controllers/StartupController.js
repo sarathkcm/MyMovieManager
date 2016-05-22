@@ -35,7 +35,9 @@
                         listOfUpdatedMovies.forEach(function (element) {
                             var movie = allMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
                             if (movie) {
-                                _(movie).extend(element);
+                                if(!movie.metadata)
+                                    movie.metadata ={};
+                                _(movie.metadata).extend(element.metadata);
                                 element = movie;
                             }
                             else {

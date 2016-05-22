@@ -87,13 +87,14 @@
                             poster: getRelativeFilePath(folderObj.Path, posterFile),
                             backdrop: getRelativeFilePath(folderObj.Path, backdropFile),
                             postersmall: getRelativeFilePath(folderObj.Path, posterSmallFile),
+                            metadata:{}
                         };
 
                         var fileNameRegEx = /([\w\s\.\,\'!#$%&@\^\~\-]+\w)[^\\]*[\'!;#$%&\(\)\-\/\@\[\]\^\{\}\|\~]*(\d{4})|(\d{4})[\W]*(\w[\w\s\.\,\'!#$%&@\^\~\-]+)/;
                         var title = fileNameRegEx.exec(path.basename(media));
                         if (title) {
-                            mediaFile.title = title[1] || title[4];
-                            mediaFile.year = title[2] || title[3];
+                            mediaFile.metadata.title = title[1] || title[4];
+                            mediaFile.metadata.year = title[2] || title[3];
                         }
                         mediaFilesInfo.push(mediaFile);
                     }

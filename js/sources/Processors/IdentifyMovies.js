@@ -5,6 +5,7 @@
         var _ = require('underscore');
         var fs = require('fs');
         var path = require('path');
+        var angular = require('angular');
         require("babel-polyfill");
         var request = require('request');
         var internet = require('../../js/dist/Node-Modules/internet.js');
@@ -13,6 +14,14 @@
             const fromWindow = BrowserWindow.fromId(sourceWindowId);
             fromWindow.webContents.send('identify-movies-completed', JSON.stringify(mediaList));
             window.close();
+        };
+
+        var GetJSONFromFile = function (fileName) {
+            return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+        };
+
+        var SaveJSONToFile = function (fileName, jsonObject) {
+            fs.writeFileSync(fileName, angular.toJson(jsonObject, 3));
         };
 
         var getImdbImageUrl = function (url, height, width) {
@@ -62,7 +71,7 @@
 
 
                     mediaList[ind].type = data.type;
-                    _(mediaList[ind]).extend(data.metadata);
+                    _(mediaList[ind].metadata).extend(data.metadata);
 
                     if (!mediaList[ind].poster && data.metadata.cover) {
                         var posterUrl = getImdbImageUrl(data.metadata.cover, 1024);
@@ -100,6 +109,28 @@
                     }
                     console.log(ex);
                 }
+
+
+                var dataFolder = path.join(mediaList[ind].$$Folder.Path, '\MyMovieManager_Data_XYZ');
+                var dataFilePath = path.join(dataFolder, '\data.json');
+                if (!isDirectory(dataFolder)) {
+                    fs.mkdirSync(dataFolder);
+                    fs.writeFileSync(dataFilePath, '[]');
+                }
+                var allMedia = GetJSONFromFile(dataFilePath);
+
+                var movie = allMedia.find(m => m.filename === mediaList[ind].filename);
+                if (movie) {
+                    if (!movie.metadata)
+                        movie.metadata = {};
+                    _(movie.metadata).extend(mediaList[ind].metadata);
+                    movie.isupdatedonce = mediaList[ind].isupdatedonce;
+                }
+                else {
+                    allMedia.push(mediaList[ind]);
+                }
+
+                SaveJSONToFile(dataFilePath, allMedia);
             }
             finish(mediaList);
         }

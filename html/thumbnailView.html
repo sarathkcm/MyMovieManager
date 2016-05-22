@@ -11,7 +11,7 @@
                         </div>
                         <div class="label ">
                             <span class="bgShade "></span>
-                            <div style="position:absolute;bottom:5px;right:5px;left:5px;font-size:12px;color:white;padding:0px;text-align:center;vertical-align:middle ">{{media.title || media.filename}}{{media.year?' ['+media.year+']':''}}</div>
+                            <div style="position:absolute;bottom:5px;right:5px;left:5px;font-size:12px;color:white;padding:0px;text-align:center;vertical-align:middle ">{{media.metadata.title || media.metadata.filename}}{{media.metadata.year?' ['+media.metadata.year+']':''}}</div>
                         </div>
                     </div>
                 </div>
@@ -23,16 +23,16 @@
             <div>
                 <br/>
                 <div ng-show="!SelectedMedia.$$ShowPoster">
-                <div style="text-align:center;font-size:24px;font-weight:bold"> {{SelectedMedia.title}}</div>
-                <div style="text-align:center;font-size:15px;font-weight:bold">{{SelectedMedia.year}}</div>
+                <div style="text-align:center;font-size:24px;font-weight:bold"> {{SelectedMedia.metadata.title}}</div>
+                <div style="text-align:center;font-size:15px;font-weight:bold">{{SelectedMedia.metadata.year}}</div>
                 <br/>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMedia.synopsis}}<span class="fa fa-quote-right super-script"></span></div>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Directed by: </b><tag-display ng-model="SelectedMedia.directors" on-click="searchCast"></tag-display></div>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Runtime: </b>{{SelectedMedia.duration}}</div>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Languages: </b><tag-display ng-model="SelectedMedia.languages" on-click="searchCast"></tag-display></div>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Countries: </b><tag-display ng-model="SelectedMedia.country" on-click="searchCast"></tag-display></div>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Genres: </b><tag-display ng-model="SelectedMedia.genres" on-click="searchCast"></tag-display></div>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Cast: </b><tag-display ng-model="SelectedMedia.cast" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMedia.metadata.synopsis}}<span class="fa fa-quote-right super-script"></span></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Directed by: </b><tag-display ng-model="SelectedMedia.metadata.directors" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Runtime: </b>{{SelectedMedia.metadata.duration}}</div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Languages: </b><tag-display ng-model="SelectedMedia.metadata.languages" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Countries: </b><tag-display ng-model="SelectedMedia.metadata.country" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Genres: </b><tag-display ng-model="SelectedMedia.metadata.genres" on-click="searchCast"></tag-display></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Cast: </b><tag-display ng-model="SelectedMedia.metadata.cast" on-click="searchCast"></tag-display></div>
                 </div>
                 
                 <div class="circle-tool-container" >
