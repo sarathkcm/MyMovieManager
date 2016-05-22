@@ -26,7 +26,7 @@
                 <div style="text-align:center;font-size:24px;font-weight:bold"> {{SelectedMedia.title}}</div>
                 <div style="text-align:center;font-size:15px;font-weight:bold">{{SelectedMedia.year}}</div>
                 <br/>
-                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMedia.synopsys}}<span class="fa fa-quote-right super-script"></span></div>
+                <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMedia.synopsis}}<span class="fa fa-quote-right super-script"></span></div>
                 <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Directed by: </b><tag-display ng-model="SelectedMedia.directors" on-click="searchCast"></tag-display></div>
                 <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Runtime: </b>{{SelectedMedia.duration}}</div>
                 <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Languages: </b><tag-display ng-model="SelectedMedia.languages" on-click="searchCast"></tag-display></div>

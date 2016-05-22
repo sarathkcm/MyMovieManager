@@ -64,18 +64,30 @@ module.exports = function (grunt) {
                 ]
 
             }
-
+        },
+        copy: {
+            main: {
+                files: [
+                    {
+                        expand: true,
+                        cwd:'js/sources/Node-Modules/',
+                        src: ['*.js'], 
+                        dest: 'js/dist/Node-Modules/'
+                    }
+                ]
+            },
         }
     };
 
     grunt.initConfig(gruntConfig);
 
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-babel');
 
     grunt.task.registerTask("configureBabelSourceMap", "configures babel source map", function () {
         gruntConfig.babel.angular.options.inputSourceMap = grunt.file.readJSON('js/dist/combined.js.map');
     });
 
-    grunt.registerTask('default', ['concat:js', 'concat:css', 'configureBabelSourceMap', 'babel']);
+    grunt.registerTask('default', ['concat:js', 'concat:css', 'configureBabelSourceMap', 'babel', 'copy']);
 };

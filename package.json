@@ -29,7 +29,8 @@
     "electron-prebuilt": "^1.1.0",
     "grunt":"^1.0.1",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-babel":"^6.0.0"
+    "grunt-babel":"^6.0.0",
+    "grunt-contrib-copy":"^1.0.0"
   },
   "repository": "https://github.com/sarathkcm/MyMovieManager.git",
   "license": "MIT",
