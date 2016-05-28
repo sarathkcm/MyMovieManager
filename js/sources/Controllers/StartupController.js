@@ -1,54 +1,27 @@
 (function () {
     angular.module('MyMovieManager')
-        .controller('StartupController', function ($scope, $timeout,$location, MediaService, DataService) {
-            $scope.IsFirstStart = false;
+        .controller('StartupController',
+        function ($scope, $timeout, $state, MediaService, DataService, MediaStore, SettingsService) {
             $scope.Initialize = function () {
-                var settings = DataService.ReadDataFromFile(settingsFile);
-                $scope.IsFirstStart = settings.IsFirstStart;
-                if ($scope.IsFirstStart) {
-                    $location.path('/Configure/InitialSetup');
+                if (SettingsService.Settings.IsFirstStart) {
+                    $state.go('/Configure/InitialSetup');
                     return;
                 }
-                $scope.Data.AllMedia = MediaService.GetMediaList();
-                $scope.RefreshMediaDisplay();
-                $timeout(triggerScanningOnStartup, 2000)
-                return;
+                $timeout($scope.TriggerScanningOnStartup, 2000);
+                $state.go('/Home');
             };
 
-            $scope.LoadMediaListFromDisk = function () {
-                $scope.Data.AllMedia = MediaService.GetMediaList();
-                $scope.RefreshMediaDisplay();
-            };
-
-            var triggerScanningOnStartup = function () {
-                MediaService.ScanMediaFiles(function () {
-                    var allMedia = MediaService.GetMediaList();
-                    var notUpdatedMediaList = _(allMedia).filter(media => !media.isupdatedonce);
-                    $scope.LoadMediaListFromDisk();
-
-                    var save = function (listOfUpdatedMovies) {
-                        listOfUpdatedMovies.forEach(function (element) {
-                            var movie = allMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
-                            if (movie) {
-                                if(!movie.metadata)
-                                    movie.metadata ={};
-                                _(movie.metadata).extend(element.metadata);
-                                element = movie;
-                            }
-                            else {
-                                allMedia.push(element);
-                            }
-                        }, this);
-
-                        var groups = _(allMedia).groupBy(media => media.$$Folder.Path);
-                        _(_(groups).keys()).each(function (key) {
-                            MediaService.SaveMediaListToFile(key, groups[key])
-                        });
-                        $scope.LoadMediaListFromDisk();
-                    };
-                    MediaService.UpdateMediaMetaData(notUpdatedMediaList, save);
-                });
-
+            $scope.TriggerScanning = function () {
+                MediaService.ScanMediaFiles()
+                    .then(() => {
+                        MediaStore.Reload();
+                        var notUpdatedMediaList = _(MediaStore.AllMedia).filter(media => !media.isupdatedonce);
+                        return MediaService.UpdateMediaMetaData(notUpdatedMediaList);
+                    }).then(mediaList => {
+                        MediaStore.UpdateMediaList(mediaList);
+                        MediaStore.Save();
+                        MediaStore.Reload();
+                    });
             };
 
         });

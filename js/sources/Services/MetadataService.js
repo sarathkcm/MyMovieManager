@@ -1,14 +1,13 @@
 (function () {
     angular.module("MyMovieManager")
         .service("MetadataService", ["DataService", "FileService", function (DataService, Files) {
-
-            const FilenameRegex = fileNameRegEx = /([\w\s\.\,\'!#$%&@\^\~\-]+\w)[^\\]*[\'!;#$%&\(\)\-\/\@\[\]\^\{\}\|\~]*(\d{4})|(\d{4})[\W]*(\w[\w\s\.\,\'!#$%&@\^\~\-]+)/;
+            var path = require('path');
+            const FilenameRegex = /([\w\s\.\,\'!#$%&@\^\~\-]+\w)[^\\]*[\'!;#$%&\(\)\-\/\@\[\]\^\{\}\|\~]*(\d{4})|(\d{4})[\W]*(\w[\w\s\.\,\'!#$%&@\^\~\-]+)/;
 
             this.GetOfflineMetadata = function (mediaFile, watchedFolder) {
 
                 var mediaFolder = path.dirname(mediaFile);
-                var posterFile = Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'folder.jpg'))
-                    || Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'cover.jpg'));
+                var posterFile = Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'folder.jpg')) || Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'cover.jpg'));
                 var backdropFile = Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'backdrop.jpg'));
                 var posterSmallFile = Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'folderSmall.jpg'));
 

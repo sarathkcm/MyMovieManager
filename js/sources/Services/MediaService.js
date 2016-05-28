@@ -2,14 +2,13 @@
     angular.module("MyMovieManager")
         .service("MediaService",
         ['DataService', 'FileService', 'SettingsService', 'MetadataService', function (DataService, Files, SettingsService, MetaDataService) {
-            var path = require('path');
             this.SaveMediaListToFile = function (folder, mediaList) {
                 var dataStorage = Files.GetDataStorageDetails(folder, true);
                 DataService.SaveDataToFile(dataStorage.File, mediaList);
             };
 
             this.SaveMediaListToFileWithMetadata = function (folder, mediaList) {
-                var dataStorage = Files.GetDataStorageDetails(folderObj.Path, true);
+                var dataStorage = Files.GetDataStorageDetails(folder, true);
                 var mediaFilesInfo = DataService.ReadDataFromFile(dataStorage.File);
 
                 _(mediaList).each(media => {
@@ -23,9 +22,8 @@
             };
 
             this.GetMediaList = function () {
-                var folderList = DataService.ReadDataFromFile(watchedFoldersFile);
                 var mediaList = [];
-                folderList.forEach(folder => {
+                _(SettingsService.WatchedFolders).each(folder => {
                     var dataStorage = Files.GetDataStorageDetails(folder.Path);
                     var list = DataService.ReadDataFromFile(dataStorage.File);
                     _(list).each(item => {
@@ -36,36 +34,57 @@
                 return mediaList;
             };
 
-            this.ScanMediaFiles = function (callBack) {
-                var folderList = DataService.ReadDataFromFile(watchedFoldersFile);
-                _(folderList).each(folder => {
-                    if (folder.Recursive) {
-                        var fileList = Files.GetFilesRecursively(folder.Path, SettingsService.Settings.SupportedFileFormats);
-                        this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
-                    } else {
-                        var fileList = Files.GetFiles(folder.Path, SettingsService.Settings.SupportedFileFormats);
-                        this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
+            this.ScanMediaFiles = function () {
+                return new Promise((resolve, reject) => {
+                    try {
+                        _(SettingsService.WatchedFolders).each(folder => {
+                            var fileList = [];
+                            if (folder.Recursive) {
+                                fileList = Files.GetFilesRecursively(folder.Path, SettingsService.Settings.SupportedFileFormats);
+                                this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
+                            } else {
+                                fileList = Files.GetFiles(folder.Path, SettingsService.Settings.SupportedFileFormats);
+                                this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
+                            }
+                        });
+                        resolve();
+                    }
+                    catch (ex) {
+                        reject(ex);
                     }
                 });
-                if (callBack) callBack();
             };
 
+            this.UpdateMediaMetaData = function (mediaList) {
 
-            this.UpdateMediaMetaData = function (mediaList, callBack) {
-                const BrowserWindow = require('electron').remote.BrowserWindow
-                const ipcRenderer = require('electron').ipcRenderer
-                const path = require('path')
-                const currentWindowId = BrowserWindow.getFocusedWindow().id
-                const processorPath = 'file://' + path.join(__dirname, '/pages/Processors/IdentifyMovies.html')
-                let win = new BrowserWindow({ width: 400, height: 400, show: false })
-                win.loadURL(processorPath)
+                return new Promise((resolve, reject) => {
+                    try {
+                        const BrowserWindow = require('electron').remote.BrowserWindow
+                        const ipcRenderer = require('electron').ipcRenderer
+                        const path = require('path')
+                        const currentWindowId = BrowserWindow.getFocusedWindow().id
+                        const processorPath = 'file://' + path.join(__dirname, '/pages/Processors/IdentifyMovies.html')
+                        let win = new BrowserWindow({ width: 400, height: 400, show: false })
+                        win.loadURL(processorPath)
 
-                win.webContents.on('did-finish-load', function () {
-                    win.webContents.send('identify-movies', JSON.stringify(mediaList), currentWindowId)
-                });
+                        win.webContents.on('did-finish-load', function () {
+                            win.webContents.send('identify-movies', JSON.stringify(mediaList), currentWindowId)
+                        });
+                        win.webContents.on('did-fail-load', function (event, errorCode, errorDescription) {
+                            reject({
+                                Event: event,
+                                ErrorCode: errorCode,
+                                ErrorDescription: errorDescription
+                            });
+                        });
+                        ipcRenderer.on('identify-movies-completed', function (event, output) {
+                            resolve(JSON.parse(output));
+                        });
+                    }
+                    catch (ex) {
+                        reject(ex);
+                    }
 
-                ipcRenderer.on('identify-movies-completed', function (event, output) {
-                    callBack(JSON.parse(output));
                 });
             };
         }]);

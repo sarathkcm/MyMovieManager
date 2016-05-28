@@ -1,6 +1,6 @@
 (function () {
     angular.module("MyMovieManager")
-        .service("DataService", function ($http) {
+        .service("DataService", function () {
             
             var fs = fs || require('fs');
             this.ReadDataFromFile = function (fileName) {

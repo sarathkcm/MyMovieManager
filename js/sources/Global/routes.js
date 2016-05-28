@@ -2,7 +2,7 @@ angular.module('MyMovieManager')
     .config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlProvider) {
             $urlProvider.otherwise('/');
-            $stateProviderProvider
+            $stateProvider
                 .state('/', {
                     url: '/',
                     templateUrl: './pages/Views/Display/startup.html'

@@ -1,35 +1,76 @@
 (function () {
     angular.module("MyMovieManager")
-        .controller("ThumbnailViewController", function ($scope, $rootScope) {
-            $scope.SelectMedia = function (media) {
-                _($scope.Data.DisplayedMedia).each(item => item.$$Selected = false);
-                media.$$Selected = true;
-                $scope.SelectedMedia = media;
-            }
-            $scope.ShowPoster = function () {
-                $scope.SelectedMedia.$$ShowPoster = !$scope.SelectedMedia.$$ShowPoster;
-            };
+        .controller("ThumbnailViewController", ["$scope", "$rootScope", "MediaStore",
+            function ($scope, $rootScope, MediaStore) {
 
-            $scope.searchCast = function (query) {
-                alert(query);
-            };
-            $rootScope.$on('refresh-display', function () {
-                if (!$scope.Data.DisplayedMedia && !$scope.Data.DisplayedMedia.length)
-                    return;
-                if (!$scope.SelectedMedia) {
-                    $scope.SelectedMedia = $scope.Data.DisplayedMedia[0];
-                    $scope.SelectedMedia.$$Selected = true;
-                    return;
+                $scope.DisplayedMedia = [];
+                $scope.Filters = {
+                    Watched: function (mediaList) {
+                        return _(mediaList).filter(function (media) {
+                            switch ($scope.DisplayWatched) {
+                                case 0:
+                                    return !media.iswatched;
+                                case 1:
+                                    return media.iswatched;
+                                default:
+                                    return true;
+                            }
+                        });
+                    }
+                };
+
+                $scope.Initialize = function () {
+                    $scope.DisplayedMedia = MediaStore.AllMedia;
+                };
+
+                $scope.SelectMedia = function (media) {
+                    _($scope.DisplayedMedia).each(item => item.$$Selected = false);
+                    media.$$Selected = true;
+                    $scope.SelectedMedia = media;
                 }
-                var selectedMedia = $scope.Data.DisplayedMedia.find(m => m.$$Folder.Path + m.filename === $scope.SelectedMedia.$$Folder.Path + $scope.SelectedMedia.filename)
-                if (!selectedMedia)
-                    $scope.SelectedMedia = $scope.Data.DisplayedMedia[0];
-                else
-                    $scope.SelectedMedia = selectedMedia;
+                $scope.ShowPoster = function () {
+                    $scope.SelectedMedia.$$ShowPoster = !$scope.SelectedMedia.$$ShowPoster;
+                };
 
-                $scope.SelectedMedia.$$Selected = true;
+                $scope.SearchCast = function (query) {
+                    alert(query);
+                };
 
-            });
-        });
+                $scope.ApplyFilters = function () {
+                    var allMedia = MediaStore.AllMedia;
+                    for (var key in $scope.Filters) {
+                        allMedia = $scope.Filters[key](allMedia);
+                    }
+                    _(allMedia).each(element => {
+                        var movie = $scope.DisplayedMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
+                        if (movie) {
+                            _(movie).extend(element);
+                            element = movie;
+                        }
+                        else {
+                            $scope.DisplayedMedia.push(element);
+                        }
+                    });
+                };
+
+
+                $rootScope.$on('media-list-changed', function () {
+                    $scope.ApplyFilters();
+                    if (!$scope.DisplayedMedia && !$scope.DisplayedMedia.length)
+                        return;
+                    if (!$scope.SelectedMedia) {
+                        $scope.SelectedMedia = $scope.DisplayedMedia[0];
+                        $scope.SelectedMedia.$$Selected = true;
+                        return;
+                    }
+                    var selectedMedia = $scope.DisplayedMedia.find(m => m.$$Folder.Path + m.filename === $scope.SelectedMedia.$$Folder.Path + $scope.SelectedMedia.filename)
+                    if (!selectedMedia)
+                        $scope.SelectedMedia = $scope.DisplayedMedia[0];
+                    else
+                        $scope.SelectedMedia = selectedMedia;
+
+                    $scope.SelectedMedia.$$Selected = true;
+                });
+            }]);
 
 })();
