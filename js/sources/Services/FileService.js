@@ -1,14 +1,15 @@
 (function () {
     angular.module("MyMovieManager")
-        .service("FileService", function ($http) {
+        .service("FileService", function () {
             var fs = fs || require('fs'),
                 path = require('path');
-            this.GetFilesRecursively = function (dir, fileExtensions, filelis) {
+            var Service = this;
+            Service.GetFilesRecursively = function (dir, fileExtensions, filelist) {
                 var files = fs.readdirSync(dir);
                 filelist = filelist || [];
-                files.forEach(function (file) {
+                _(files).each(function (file) {
                     if (fs.statSync(dir + path.sep + file).isDirectory()) {
-                        filelist = this.GetFilesRecursive(dir + path.sep + file, fileExtensions, filelist);
+                        filelist = Service.GetFilesRecursively(dir + path.sep + file, fileExtensions, filelist);
                     } else {
                         filelist.push(path.join(dir, path.sep, file));
                     }
@@ -16,14 +17,14 @@
                 if (!fileExtensions)
                     return filelist;
 
-                return _(fileList).filter(function (file) {
+                return _(filelist).filter(function (file) {
                     return _(fileExtensions).any(function (format) {
                         return file.endsWith(format);
                     });
                 });
             };
 
-            this.GetFiles = function (dir, fileExtensions) {
+            Service.GetFiles = function (dir, fileExtensions) {
                 var files = fs.readdirSync(dir);
 
                 var fileList = _(files).map(function (file) {
@@ -41,7 +42,7 @@
 
             }
 
-            this.IsDirectory = function (path) {
+            Service.IsDirectory = function (path) {
                 try {
                     return fs.statSync(path).isDirectory;
                 } catch (ex) {
@@ -49,7 +50,7 @@
                 }
             };
 
-            this.GetFilePathIfExists = function (file) {
+            Service.GetFilePathIfExists = function (file) {
                 try {
                     if (fs.statSync(file).isFile)
                         return file;
@@ -59,28 +60,29 @@
                 }
             };
 
-            this.GetRelativeFilePath = function (folder, fileName) {
+            Service.GetRelativeFilePath = function (folder, fileName) {
                 if (fileName) return path.relative(folder, fileName);
                 return undefined;
             };
 
-            this.InitializeDataStorage = function (folder) {
+            Service.InitializeDataStorage = function (folder) {
                 var dataFolder = path.join(folder, '\MyMovieManager_Data_XYZ');
                 var dataFilePath = path.join(dataFolder, '\data.json');
-                if (!this.IsDirectory(dataFolder)) {
+                if (!Service.IsDirectory(dataFolder)) {
                     fs.mkdirSync(dataFolder);
                 }
-                if (!GetFilePathIfExists(dataFilePath)) {
+                if (!Service.GetFilePathIfExists(dataFilePath)) {
                     fs.writeFileSync(dataFilePath, '[]');
                 }
                 return { Folder: dataFolder, File: dataFilePath };
             };
 
-            this.GetDataStorageDetails = function (folder, initialize) {
+            Service.GetDataStorageDetails = function (folder, initialize) {
                 if (initialize)
-                    this.InitializeDataStorage(folder);
+                    Service.InitializeDataStorage(folder);
+                var dataFolder = path.join(folder, '\MyMovieManager_Data_XYZ');
                 return {
-                    Folder: path.join(folder, '\MyMovieManager_Data_XYZ'),
+                    Folder: dataFolder,
                     File: path.join(dataFolder, '\data.json')
                 };
             };

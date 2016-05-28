@@ -1,4 +1,4 @@
-<div ng-controller="InitialSetupController" class="whole-screen" ng-init="Initialize()" ng-show="IsFirstStart">
+<div ng-controller="InitialSetupController" class="whole-screen" ng-init="Initialize()">
     <div style="width:100%;height:100%;background-color:black">
         <div style="width:60%;height:70%;position:absolute;top:13%;left:20%; background-color:white;border-radius:8px;border:1px solid blue;padding:10px;">
 
@@ -80,8 +80,8 @@
 
                 </div>
                 <div style="position:absolute; bottom:10px;left:180px;right:10px;">
-                    <button style="float:right;margin:5px;" ng-disabled="!ScanFinished" ng-click="Finalize();">Finish</button>
-                    <button style="float:right;margin:5px;" ng-click="SetPage(1)">Previous</button>
+                    <button style="float:right;margin:5px;" ng-disabled="!Scan.Finished" ng-click="Finalize();">Finish</button>
+                    <button style="float:right;margin:5px;" ng-disabled="!Scan.Started" ng-click="SetPage(2)">Previous</button>
                 </div>
             </div>
         </div>

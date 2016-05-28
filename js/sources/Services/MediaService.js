@@ -2,12 +2,14 @@
     angular.module("MyMovieManager")
         .service("MediaService",
         ['DataService', 'FileService', 'SettingsService', 'MetadataService', function (DataService, Files, SettingsService, MetaDataService) {
-            this.SaveMediaListToFile = function (folder, mediaList) {
+            
+            var Service = this;
+            Service.SaveMediaListToFile = function (folder, mediaList) {
                 var dataStorage = Files.GetDataStorageDetails(folder, true);
                 DataService.SaveDataToFile(dataStorage.File, mediaList);
             };
 
-            this.SaveMediaListToFileWithMetadata = function (folder, mediaList) {
+            Service.SaveMediaListToFileWithMetadata = function (folder, mediaList) {
                 var dataStorage = Files.GetDataStorageDetails(folder, true);
                 var mediaFilesInfo = DataService.ReadDataFromFile(dataStorage.File);
 
@@ -21,7 +23,7 @@
                 DataService.SaveDataToFile(dataStorage.File, mediaFilesInfo);
             };
 
-            this.GetMediaList = function () {
+            Service.GetMediaList = function () {
                 var mediaList = [];
                 _(SettingsService.WatchedFolders).each(folder => {
                     var dataStorage = Files.GetDataStorageDetails(folder.Path);
@@ -34,17 +36,17 @@
                 return mediaList;
             };
 
-            this.ScanMediaFiles = function () {
+            Service.ScanMediaFiles = function () {
                 return new Promise((resolve, reject) => {
                     try {
                         _(SettingsService.WatchedFolders).each(folder => {
                             var fileList = [];
                             if (folder.Recursive) {
                                 fileList = Files.GetFilesRecursively(folder.Path, SettingsService.Settings.SupportedFileFormats);
-                                this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
+                                Service.SaveMediaListToFileWithMetadata(folder.Path, fileList);
                             } else {
                                 fileList = Files.GetFiles(folder.Path, SettingsService.Settings.SupportedFileFormats);
-                                this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
+                                Service.SaveMediaListToFileWithMetadata(folder.Path, fileList);
                             }
                         });
                         resolve();
@@ -55,17 +57,17 @@
                 });
             };
 
-            this.UpdateMediaMetaData = function (mediaList) {
+            Service.UpdateMediaMetaData = function (mediaList) {
 
                 return new Promise((resolve, reject) => {
                     try {
-                        const BrowserWindow = require('electron').remote.BrowserWindow
-                        const ipcRenderer = require('electron').ipcRenderer
-                        const path = require('path')
-                        const currentWindowId = BrowserWindow.getFocusedWindow().id
+                        const BrowserWindow = require('electron').remote.BrowserWindow;
+                        const ipcRenderer = require('electron').ipcRenderer;
+                        const path = require('path');
+                        const currentWindowId = BrowserWindow.getFocusedWindow().id;
                         const processorPath = 'file://' + path.join(__dirname, '/pages/Processors/IdentifyMovies.html')
-                        let win = new BrowserWindow({ width: 400, height: 400, show: false })
-                        win.loadURL(processorPath)
+                        let win = new BrowserWindow({ width: 400, height: 400, show: false });
+                        win.loadURL(processorPath);
 
                         win.webContents.on('did-finish-load', function () {
                             win.webContents.send('identify-movies', JSON.stringify(mediaList), currentWindowId)

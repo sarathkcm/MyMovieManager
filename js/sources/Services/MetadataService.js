@@ -1,10 +1,12 @@
 (function () {
     angular.module("MyMovieManager")
         .service("MetadataService", ["DataService", "FileService", function (DataService, Files) {
+            var Service = this;
+
             var path = require('path');
             const FilenameRegex = /([\w\s\.\,\'!#$%&@\^\~\-]+\w)[^\\]*[\'!;#$%&\(\)\-\/\@\[\]\^\{\}\|\~]*(\d{4})|(\d{4})[\W]*(\w[\w\s\.\,\'!#$%&@\^\~\-]+)/;
 
-            this.GetOfflineMetadata = function (mediaFile, watchedFolder) {
+            Service.GetOfflineMetadata = function (mediaFile, watchedFolder) {
 
                 var mediaFolder = path.dirname(mediaFile);
                 var posterFile = Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'folder.jpg')) || Files.GetFilePathIfExists(path.join(mediaFolder, path.sep, 'cover.jpg'));

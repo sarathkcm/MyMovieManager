@@ -3,7 +3,7 @@
         <div style="width:66%;float:left;height:100%;position:relative">
             <div style="height:40px;background-color:blue;">ToolBar</div>
             <div style="overflow:scroll;height:95%;">
-                <div ng-repeat="media in Data.DisplayedMedia " class="poster-thumb " ng-class="media.$$Selected? 'highlighted': '' " ng-click="SelectMedia(media) ">
+                <div ng-repeat="media in DisplayedMedia " class="poster-thumb " ng-class="media.$$Selected? 'highlighted': '' " ng-click="SelectMedia(media) ">
                     <div>
                         <div>
                             <img ng-src="{{media.postersmall?media.$$Folder.Path + path.sep + media.postersmall:

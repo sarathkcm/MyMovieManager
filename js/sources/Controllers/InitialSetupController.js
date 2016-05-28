@@ -1,11 +1,17 @@
 (function () {
     angular.module('MyMovieManager')
-        .controller('InitialSetupController', ['$scope', '$state', 'DataService', 'SettingsService',
-            function ($scope, $state, DataService, SettingsService) {
+        .controller('InitialSetupController', ['$scope', '$state', 'SettingsService', 'MediaService',
+            function ($scope, $state, SettingsService, MediaService) {
                 $scope.WizardStep = 0;
                 $scope.newFolder = {
                     Recursive: true
                 };
+
+                $scope.Scan = {
+                    Finished: false,
+                    Started: false
+                };
+
                 $scope.Folders = [];
                 $scope.Initialize = function () {
                     $scope.Folders = SettingsService.WatchedFolders;
@@ -42,6 +48,14 @@
                     SettingsService.Settings.IsFirstStart = undefined;
                     SettingsService.SaveSettings();
                     $state.go('/');
+                };
+
+                $scope.BeginScan = function () {
+                    $scope.Scan.Started = true;
+                    MediaService.ScanMediaFiles().then(() => {
+                        $scope.Scan.Finished = true;
+                        $scope.safeApply();
+                    });
                 };
             }]);
 

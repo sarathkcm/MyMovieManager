@@ -7,6 +7,10 @@ angular.module('MyMovieManager')
                     url: '/',
                     templateUrl: './pages/Views/Display/startup.html'
                 })
+                .state('Configuration', {
+                    url: '/Configuration',
+                    templateUrl: './pages/Views/Configuration/index.html'
+                })
                 .state('Configuration.InitialSetup', {
                     url: '/Configuration/InitialSetup',
                     templateUrl: './pages/Views/Configuration/initialSetup.html'

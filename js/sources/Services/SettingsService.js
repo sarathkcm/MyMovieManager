@@ -1,17 +1,19 @@
 (function () {
     angular.module("MyMovieManager")
         .service("SettingsService", ["DataService", function (DataService) {
+            var Service = this;
+
             const SettingsFile = './data/settings.json';
             const WatchedFoldersFile = './data/settings/watchedFolders.json';
 
-            this.Settings = DataService.ReadDataFromFile(SettingsFile);
-            this.WatchedFolders = DataService.ReadDataFromFile(WatchedFoldersFile);
+            Service.Settings = DataService.ReadDataFromFile(SettingsFile);
+            Service.WatchedFolders = DataService.ReadDataFromFile(WatchedFoldersFile);
 
-            this.SaveSettings = function () {
-                DataService.SaveDataToFile(SettingsFile, this.Settings);
+            Service.SaveSettings = function () {
+                DataService.SaveDataToFile(SettingsFile, Service.Settings);
             };
-            this.SaveWatchedFolders = function () {
-                DataService.SaveDataToFile(WatchedFoldersFile, this.WatchedFolders);
+            Service.SaveWatchedFolders = function () {
+                DataService.SaveDataToFile(WatchedFoldersFile, Service.WatchedFolders);
             };
         }]);
 })();
