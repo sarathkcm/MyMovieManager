@@ -1,3 +1,3 @@
 (function () {
-    angular.module('MyMovieManager', ["ngRoute"]);
+    angular.module('MyMovieManager', ["ui.router"]);
 })();

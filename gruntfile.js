@@ -11,6 +11,7 @@ module.exports = function (grunt) {
                     'js/sources/Global/settings.js',
                     'js/sources/Global/functions.js',
                     'js/sources/Global/ng-modules.js',
+                    'js/sources/Global/routes.js',
                     'js/sources/Filters/**/*.js',
                     'js/sources/Services/**/*.js',
                     'js/sources/Controllers/**/*.js',

@@ -1,13 +1,13 @@
 (function () {
     angular.module('MyMovieManager')
-        .controller('InitialSetupController', function ($scope, $location) {
+        .controller('InitialSetupController', function ($scope, $state, DataService) {
             $scope.WizardStep = 0;
             $scope.newFolder = {
                 Recursive: true
             };
             $scope.Folders = [];
             $scope.Initialize = function () {
-                $scope.Folders = GetJSONFromFile(watchedFoldersFile);
+                $scope.Folders = DataService.ReadDataFromFile(watchedFoldersFile);
             };
 
             $scope.SetPage = function (page) {
@@ -33,16 +33,16 @@
                 $scope.Folders.splice($scope.Folders.indexOf(folder), 1);
             }
             $scope.SaveFolderListToFile = function () {
-                var folderList = GetJSONFromFile(watchedFoldersFile);
+                var folderList = DataService.ReadDataFromFile(watchedFoldersFile);
                 folderList = $scope.Folders;
-                SaveJSONToFile(watchedFoldersFile, folderList);
+                DataService.SaveDataToFile(watchedFoldersFile, folderList);
             }
 
             $scope.Finalize = function () {
-                var settings = GetJSONFromFile(settingsFile);
+                var settings = DataService.ReadDataFromFile(settingsFile);
                 settings.IsFirstStart = undefined;
-                SaveJSONToFile(settingsFile, settings);
-                $location.path('/');
+                DataService.SaveDataToFile(settingsFile, settings);
+                $state.go('/');
             };
         });
 

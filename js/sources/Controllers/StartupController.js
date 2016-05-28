@@ -1,9 +1,9 @@
 (function () {
     angular.module('MyMovieManager')
-        .controller('StartupController', function ($scope, $timeout,$location, MediaService) {
+        .controller('StartupController', function ($scope, $timeout,$location, MediaService, DataService) {
             $scope.IsFirstStart = false;
             $scope.Initialize = function () {
-                var settings = GetJSONFromFile(settingsFile);
+                var settings = DataService.ReadDataFromFile(settingsFile);
                 $scope.IsFirstStart = settings.IsFirstStart;
                 if ($scope.IsFirstStart) {
                     $location.path('/Configure/InitialSetup');

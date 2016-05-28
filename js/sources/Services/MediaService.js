@@ -1,142 +1,52 @@
 (function () {
     angular.module("MyMovieManager")
-        .service("MediaService", function ($http) {
+        .service("MediaService",
+        ['DataService', 'FileService', 'SettingsService', 'MetadataService', function (DataService, Files, SettingsService, MetaDataService) {
             var path = require('path');
-            var recursiveScan = function (dir, filelist) {
-                var fs = fs || require('fs'),
-                    path = require('path'),
-                    files = fs.readdirSync(dir);
-                filelist = filelist || [];
-                files.forEach(function (file) {
-                    if (fs.statSync(dir + path.sep + file).isDirectory()) {
-                        filelist = recursiveScan(dir + path.sep + file, filelist);
-                    } else {
-                        filelist.push(path.join(dir, path.sep, file));
-                    }
-                });
-                return filelist;
-            };
-
-            var getFilteredFiles = function (fileList) {
-                var settings = GetJSONFromFile(settingsFile);
-                return _(fileList).filter(function (file) {
-                    return _(settings.SupportedFileFormats).any(function (format) {
-                        return file.endsWith(format);
-                    });
-                });
-            }
-
-            var isDirectory = function (path) {
-                try {
-                    return fs.statSync(path).isDirectory;
-                } catch (ex) {
-                    return false;
-                }
-            };
-            var getFileIfExists = function (file) {
-                try {
-                    if (fs.statSync(file).isFile)
-                        return file;
-                    return undefined;
-                } catch (ex) {
-                    return undefined;
-                }
-            };
-
-            var getRelativeFilePath = function (folder, fileName) {
-                if (fileName) return path.relative(folder, fileName);
-                return undefined;
-            };
-
-
-
             this.SaveMediaListToFile = function (folder, mediaList) {
-                var dataFolder = path.join(folder, '\MyMovieManager_Data_XYZ');
-                var dataFilePath = path.join(dataFolder, '\data.json');
-                if (!isDirectory(dataFolder)) {
-                    fs.mkdirSync(dataFolder);
-                    fs.writeFileSync(dataFilePath, '[]');
-                }
-
-                SaveJSONToFile(path.join(dataFolder, '\data.json'), mediaList);
+                var dataStorage = Files.GetDataStorageDetails(folder, true);
+                DataService.SaveDataToFile(dataStorage.File, mediaList);
             };
-            var saveMediaListToFile = function (folderObj, mediaList) {
-                var dataFolder = path.join(folderObj.Path, '\MyMovieManager_Data_XYZ');
-                var dataFilePath = path.join(dataFolder, '\data.json');
-                if (!isDirectory(dataFolder)) {
-                    fs.mkdirSync(dataFolder);
-                    fs.writeFileSync(dataFilePath, '[]');
-                }
-                if (!getFileIfExists(dataFilePath)) {
-                    fs.writeFileSync(dataFilePath, '[]');
-                }
 
-                var mediaFilesInfo = GetJSONFromFile(dataFilePath);
+            this.SaveMediaListToFileWithMetadata = function (folder, mediaList) {
+                var dataStorage = Files.GetDataStorageDetails(folderObj.Path, true);
+                var mediaFilesInfo = DataService.ReadDataFromFile(dataStorage.File);
 
-                _(mediaList).each(function (media) {
-                    var relativeFileName = getRelativeFilePath(folderObj.Path, media);
+                _(mediaList).each(media => {
+                    var relativeFileName = Files.GetRelativeFilePath(folder, media);
                     if (!mediaFilesInfo.find(file => file.filename == relativeFileName)) {
-                        var mediaFolder = path.dirname(media);
-                        var posterFile = getFileIfExists(path.join(mediaFolder, path.sep, 'folder.jpg')) || getFileIfExists(path.join(mediaFolder, path.sep, 'cover.jpg'));
-                        var backdropFile = getFileIfExists(path.join(mediaFolder, path.sep, 'backdrop.jpg'));
-                        var posterSmallFile = getFileIfExists(path.join(mediaFolder, path.sep, 'folderSmall.jpg'));
-
-                        var mediaFile = {
-                            filename: relativeFileName,
-                            iswatched: false,
-                            poster: getRelativeFilePath(folderObj.Path, posterFile),
-                            backdrop: getRelativeFilePath(folderObj.Path, backdropFile),
-                            postersmall: getRelativeFilePath(folderObj.Path, posterSmallFile),
-                            metadata:{}
-                        };
-
-                        var fileNameRegEx = /([\w\s\.\,\'!#$%&@\^\~\-]+\w)[^\\]*[\'!;#$%&\(\)\-\/\@\[\]\^\{\}\|\~]*(\d{4})|(\d{4})[\W]*(\w[\w\s\.\,\'!#$%&@\^\~\-]+)/;
-                        var title = fileNameRegEx.exec(path.basename(media));
-                        if (title) {
-                            mediaFile.metadata.title = title[1] || title[4];
-                            mediaFile.metadata.year = title[2] || title[3];
-                        }
+                        var mediaFile = MetaDataService.GetOfflineMetadata(media, folder);
                         mediaFilesInfo.push(mediaFile);
                     }
                 })
-                SaveJSONToFile(path.join(dataFolder, '\data.json'), mediaFilesInfo);
+                DataService.SaveDataToFile(dataStorage.File, mediaFilesInfo);
             };
 
             this.GetMediaList = function () {
-                var folderList = GetJSONFromFile(watchedFoldersFile);
+                var folderList = DataService.ReadDataFromFile(watchedFoldersFile);
                 var mediaList = [];
-                folderList.forEach(function (folder) {
-                    var dataFolder = path.join(folder.Path, '\MyMovieManager_Data_XYZ');
-                    var dataFilePath = path.join(dataFolder, '\data.json');
-
-                    var list = GetJSONFromFile(dataFilePath);
-                    _(list).each(function (item) {
+                folderList.forEach(folder => {
+                    var dataStorage = Files.GetDataStorageDetails(folder.Path);
+                    var list = DataService.ReadDataFromFile(dataStorage.File);
+                    _(list).each(item => {
                         item.$$Folder = folder;
                         mediaList.push(item);
                     })
-                }, this);
+                });
                 return mediaList;
             };
 
             this.ScanMediaFiles = function (callBack) {
-                var folderList = GetJSONFromFile(watchedFoldersFile);
-                folderList.forEach(function (folder) {
+                var folderList = DataService.ReadDataFromFile(watchedFoldersFile);
+                _(folderList).each(folder => {
                     if (folder.Recursive) {
-                        var fileList = recursiveScan(folder.Path);
-                        var filteredFileList = getFilteredFiles(fileList);
-                        saveMediaListToFile(folder, filteredFileList);
+                        var fileList = Files.GetFilesRecursively(folder.Path, SettingsService.Settings.SupportedFileFormats);
+                        this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
                     } else {
-                        var fs = fs || require('fs'),
-                            files = fs.readdirSync(dir);
-                        var filteredFileList = getFilteredFiles(
-                            _(fileList).map(function (file) {
-                                return path.join(folder.Path, path.sep, file)
-                            })
-                        );
-                        saveMediaListToFile(folder, filteredFileList);
+                        var fileList = Files.GetFiles(folder.Path, SettingsService.Settings.SupportedFileFormats);
+                        this.SaveMediaListToFileWithMetadata(folder.Path, fileList);
                     }
-
-                }, this);
+                });
                 if (callBack) callBack();
             };
 
@@ -158,6 +68,6 @@
                     callBack(JSON.parse(output));
                 });
             };
-        });
+        }]);
 
 })();
