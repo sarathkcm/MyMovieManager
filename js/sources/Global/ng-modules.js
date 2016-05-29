@@ -1,3 +1,3 @@
 (function () {
-    angular.module('MyMovieManager', ["ui.router"]);
+    angular.module('MyMovieManager', ["ui.router","oc.lazyLoad"]);
 })();

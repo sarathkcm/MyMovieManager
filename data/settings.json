@@ -1,13 +1,30 @@
 {
-   "SupportedFileFormats": [
-      ".mp4",
-      ".mkv",
-      ".ogg",
-      ".avi",
-      ".wmv"
-   ],
-   "Themes":{
-       "CurrentTheme": "Photon",
-       "AvailableThemes":["Photon","Native"]
-   }
+    "SupportedFileFormats": [
+        ".mp4",
+        ".mkv",
+        ".ogg",
+        ".avi",
+        ".wmv"
+    ],
+    "Themes": {
+        "CurrentTheme": "Photon",
+        "AvailableThemes": {
+            "Photon": {
+                "Home": {
+                    "Page": "thumbnailView.html",
+                    "Scripts": [
+                        "scripts.js"
+                    ]
+                }
+            },
+            "Native": {
+                "Home": {
+                    "Page": "thumbnailView.html",
+                    "Scripts": [
+                        "scripts.js"
+                    ]
+                }
+            }
+        }
+    }
 }

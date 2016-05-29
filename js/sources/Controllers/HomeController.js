@@ -1,16 +1,16 @@
 (function () {
     angular.module("MyMovieManager")
-        .controller("ThumbnailViewController", ["$scope", "$rootScope", "MediaStore",
-            function ($scope, $rootScope, MediaStore) {
+        .controller("HomeController", ["$scope", "$rootScope", "MediaStore", "$timeout",
+            function ($scope, $rootScope, MediaStore, $timeout) {
 
                 $scope.DisplayedMedia = [];
                 $scope.Filters = {
                     Watched: function (mediaList) {
                         return _(mediaList).filter(function (media) {
-                            switch ($scope.DisplayWatched) {
-                                case 0:
+                            switch ($scope.NowShowing) {
+                                case "NotWatched":
                                     return !media.iswatched;
-                                case 1:
+                                case "Watched":
                                     return media.iswatched;
                                 default:
                                     return true;
@@ -21,8 +21,11 @@
 
                 $scope.Initialize = function () {
                     $scope.DisplayedMedia = MediaStore.AllMedia;
+                    $rootScope.$broadcast('displayed-list-changed', $scope.DisplayedMedia);
                 };
 
+                $timeout($scope.Initialize, 50);
+                
                 $scope.ApplyFilters = function () {
                     var allMedia = MediaStore.AllMedia;
                     for (var key in $scope.Filters) {

@@ -19,7 +19,8 @@
     "request": "^2.72.0",
     "themoviedbclient": "^0.1.0",
     "jimp":"^0.2.24",
-    "angular-ui-router": "^0.3.0"
+    "angular-ui-router": "^0.3.0",
+    "oclazyload":"^1.0.9"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",

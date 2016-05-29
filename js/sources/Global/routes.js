@@ -18,8 +18,42 @@ angular.module('MyMovieManager')
                 .state('Home', {
                     url: '/Home',
                     templateProvider: function (SettingsService) {
-                        return `<div ng-include = "'./pages/Views/Display/Themes/${SettingsService.Settings.Themes.CurrentTheme}/thumbnailView.html'"></div>`;
+                        var theme = SettingsService.Settings.Themes.AvailableThemes[SettingsService.Settings.Themes.CurrentTheme];
+                        return `<div ng-include = "'./pages/Views/Display/Themes/${SettingsService.Settings.Themes.CurrentTheme}/${theme.Home.Page}'"></div>`;
                     },
-                    controller: 'ThumbnailViewController'
+                    resolve: {
+                        loadScripts: function ($ocLazyLoad, SettingsService) {
+                            var theme = SettingsService.Settings.Themes.AvailableThemes[SettingsService.Settings.Themes.CurrentTheme];
+                            var scripts = [];
+                            theme.Home.Scripts.forEach(function (script) {
+                                scripts.push(`./pages/Views/Display/Themes/${SettingsService.Settings.Themes.CurrentTheme}/${script}`);
+                            }, this);
+
+                            return $ocLazyLoad.load(scripts);
+
+                        }
+                    },
+                    controller: 'HomeController'
+                })
+                .state('Details', {
+                    url: '/Home/Details',
+                    templateProvider: function (SettingsService) {
+                        var theme = SettingsService.Settings.Themes.AvailableThemes[SettingsService.Settings.Themes.CurrentTheme];
+                        return `<div ng-include = "'./pages/Views/Display/Themes/${SettingsService.Settings.Themes.CurrentTheme}/${theme.Detail.Page}'"></div>`;
+                    },
+                    resolve: {
+                        loadScripts: function ($ocLazyLoad, SettingsService) {
+                            var theme = SettingsService.Settings.Themes.AvailableThemes[SettingsService.Settings.Themes.CurrentTheme];
+                            var scripts = [];
+                            theme.Detail.Scripts.forEach(function (script) {
+                                scripts.push(`./pages/Views/Display/Themes/${SettingsService.Settings.Themes.CurrentTheme}/${script}`);
+                            }, this);
+
+                            return $ocLazyLoad.load(scripts);
+
+                        }
+                    },
+                    controller: 'DetailsController'
                 });
+
         }]);
