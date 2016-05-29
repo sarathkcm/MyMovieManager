@@ -1,10 +1,9 @@
 {
-    "IsFirstStart": true,
-    "SupportedFileFormats": [
-        ".mp4",
-        ".mkv",
-        ".ogg",
-        ".avi",
-        ".wmv"
-    ]
+   "SupportedFileFormats": [
+      ".mp4",
+      ".mkv",
+      ".ogg",
+      ".avi",
+      ".wmv"
+   ]
 }

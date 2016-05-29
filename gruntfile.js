@@ -8,8 +8,6 @@ module.exports = function (grunt) {
             js: {
                 src: [
                     'js/sources/Global/modules.js',
-                    'js/sources/Global/settings.js',
-                    'js/sources/Global/functions.js',
                     'js/sources/Global/ng-modules.js',
                     'js/sources/Global/routes.js',
                     'js/sources/Filters/**/*.js',

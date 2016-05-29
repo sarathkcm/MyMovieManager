@@ -5,7 +5,7 @@
             $scope.path = {
                 sep: path.sep
             }
-            $scope.safeApply = function (fn) {
+            $scope.$SafeApply = function (fn) {
                 var phase = this.$root.$$phase;
                 if (phase == '$apply' || phase == '$digest') {
                     if (fn && (typeof (fn) === 'function')) {

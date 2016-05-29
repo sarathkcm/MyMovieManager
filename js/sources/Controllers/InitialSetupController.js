@@ -54,7 +54,7 @@
                     $scope.Scan.Started = true;
                     MediaService.ScanMediaFiles().then(() => {
                         $scope.Scan.Finished = true;
-                        $scope.safeApply();
+                        $scope.$SafeApply();
                     });
                 };
             }]);
