@@ -5,5 +5,9 @@
       ".ogg",
       ".avi",
       ".wmv"
-   ]
+   ],
+   "Themes":{
+       "CurrentTheme": "Photon",
+       "AvailableThemes":["Photon","Native"]
+   }
 }

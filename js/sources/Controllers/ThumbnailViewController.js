@@ -23,19 +23,6 @@
                     $scope.DisplayedMedia = MediaStore.AllMedia;
                 };
 
-                $scope.SelectMedia = function (media) {
-                    _($scope.DisplayedMedia).each(item => item.$$Selected = false);
-                    media.$$Selected = true;
-                    $scope.SelectedMedia = media;
-                }
-                $scope.ShowPoster = function () {
-                    $scope.SelectedMedia.$$ShowPoster = !$scope.SelectedMedia.$$ShowPoster;
-                };
-
-                $scope.SearchCast = function (query) {
-                    alert(query);
-                };
-
                 $scope.ApplyFilters = function () {
                     var allMedia = MediaStore.AllMedia;
                     for (var key in $scope.Filters) {
@@ -51,6 +38,7 @@
                             $scope.DisplayedMedia.push(element);
                         }
                     });
+                    $rootScope.$broadcast('displayed-list-changed', $scope.DisplayedMedia);
                 };
 
 

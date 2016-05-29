@@ -1,0 +1,196 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	font-family: -apple-system, 'Helvetica Neue', Helvetica, sans-serif;
+	background-color: #ffffff;
+	overflow: overlay;
+}
+
+
+::-webkit-scrollbar{
+     width: 10px;
+}
+::-webkit-scrollbar-track{
+     box-shadow: inset 0 0 2px rgba(0,0,0,0); 
+}
+::-webkit-scrollbar-track-piece{
+    background:#ffffff;
+    border-color: grey;
+}
+::-webkit-scrollbar-thumb {
+    background: lightslategrey;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0);  
+    border:1px solid rgba(255,255,255,0);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: transparent; 
+}
+
+
+.highlighted{
+    background-color:#02082D;
+    border-radius: 3px;
+    color: white;
+}
+.poster-thumb{
+	width:146px;
+	height: 211px;
+	display: inline-block;
+	overflow: hidden;
+	padding:  0px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.movie-name-thumb{
+	text-align: center;	
+	overflow: hidden;
+    display: inline;
+
+}
+.tile{
+
+	border-color: transparent;
+	background-color: transparent;
+    cursor: pointer;
+
+}
+.text-movie-thumb{
+	width: 100%;
+	text-overflow: ellipsis;
+	text-align: center;
+	font-size: 9pt;
+    line-height: 110%;
+}
+
+.img-thumb-movie{
+	box-shadow: 0px 0px 3px 0px rgba(255,255,255,1);
+    width: 110px;
+    margin-left:  18px;
+    margin-right: 18px;
+    margin-top: 8px;
+}
+
+.thumb-view-panel{
+	background-color: #ffffff;
+}
+.movie-details-panel{
+	background-color: #ffffff;
+	color: white;
+	position: fixed;
+
+}
+.host-movies{
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.movie-details-td{
+	text-align: left;
+	vertical-align: top;
+	width: 30%;
+	min-width:380px; 
+}
+.movie-thumbs-td{
+	height: 100%;
+	overflow-y:scroll;
+}
+
+.grid-item-large{
+	width: 280px;
+	height: 400px;
+}
+
+.window-button{
+    -webkit-app-region: no-drag;
+    font-size: 15px !important;
+    cursor: pointer;
+    margin-right: 7px;
+    color: grey;
+}
+.window-button:hover{
+    color: darkgrey;
+}
+
+.window-button-danger:hover{
+    color: crimson;
+}
+
+.window-border{
+    border:1px solid rgba(200,200,200,1);
+    border-top-width:0px;
+    box-shadow: rgba(0,0,0,0) 2px;
+}
+
+.headerText {
+    font-weight: bold;
+    display: inline-block;
+    font-size: 12px;
+    width: 100%;
+    text-align: center;    
+}
+
+.width-100-percent{
+    width: 100%;
+}
+
+.moviePosterDisplay {
+    background-size:cover;
+    height: 100%;
+    width:33.3%;
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+}
+
+.translucent{
+    opacity:.15;
+}
+
+.opac{
+    opacity:1;
+}
+
+.hand{
+    cursor: pointer;
+}
+
+.super-script{
+    vertical-align: super;
+}
+
+.input-box{
+    margin-left: 3px;
+    margin-right: 3px;
+    border:1px solid grey;
+    border-radius: 3px;
+    padding-left: 5px;
+    position: relative;
+};
+
+.input-box:focus{
+    border: 1px solid grey;
+}
+
+.select-box{
+    margin-left: 3px;
+    margin-right: 3px;
+    border:1px solid grey;
+    border-radius: 3px;
+    padding: 3px;
+    position: relative;
+    left:-3px;
+}
+
+.hBorder:focus {
+ border:1px solid dodgerblue;   
+}
+
+.hBorder:focus ~ .hBorder{
+ border:1px solid dodgerblue; 
+ 
+}

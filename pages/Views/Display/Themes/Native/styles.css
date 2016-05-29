@@ -1,0 +1,161 @@
+.circle-tool-container{
+    position: absolute;
+    bottom:10px;
+    right:0px;
+}
+.circle-tool{
+    position: absolute;
+    bottom:0px;
+    right:10px;
+    width:30px;
+    height: 30px;
+    box-shadow: 2px 2px 5px #333333; 
+    border-radius:50%;
+    cursor: pointer;
+    background-color: #007ACC;
+    vertical-align: middle;
+    text-align: center;
+    -webkit-transition:all 0.2s linear;
+    padding: 0 !important;
+    color:white;
+    visibility: hidden;
+    -webkit-user-select: none;
+}
+.circle-tool span{
+    position: relative;
+    top:7px;
+    left: 1px;
+}
+.circle-tool:active{
+    box-shadow: 4px 4px 5px #333333; 
+}
+
+.circle-tool-container .circle-tool:last-of-type{
+    visibility: visible;
+}
+
+.circle-tool-container:hover .circle-tool1{
+    bottom:0px;
+    visibility: visible;
+}
+
+.circle-tool-container:hover .circle-tool2{
+    bottom:35px;
+    visibility: visible;
+}
+.circle-tool-container:hover .circle-tool3{
+    bottom:70px;
+    visibility: visible;
+}
+
+.circle-tool-container:hover .circle-tool4{
+    bottom:105px;
+    visibility: visible;
+}
+
+
+
+::-webkit-scrollbar{
+     width: 10px;
+}
+::-webkit-scrollbar-track{
+     box-shadow: inset 0 0 2px rgba(0,0,0,0); 
+}
+::-webkit-scrollbar-track-piece{
+    background:transparent;
+    border-color: grey;
+}
+::-webkit-scrollbar-thumb {
+    background: lightslategrey;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0);  
+    border:1px solid rgba(255,255,255,0);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: transparent; 
+}
+
+.title-bar{
+     -webkit-app-region: drag;
+     height: 25px;
+     width: 100%;
+     background-color: grey;
+     position: absolute;
+     left: 0;
+     top: 0;
+     z-index: 10;
+}
+
+.whole-screen{
+    position: absolute;
+    left: 0;
+    top: 25px;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    overflow: auto;
+}
+
+.well{
+    border: 1px solid gray;
+}
+
+.poster-thumb{
+	width:120px;
+	height: 180px;
+	display: inline-block;
+    position: relative;
+	overflow: hidden;
+	padding:  5px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.poster-thumb.highlighted{
+    background-color:#02082D;
+    border-radius: 3px;
+}
+.poster-thumb img{
+    width: 100%;
+    height: 100%;
+}
+.movie-name-thumb{
+	text-align: center;	
+	overflow: hidden;
+    display: inline;
+}
+
+div.poster-thumb  .label {
+    visibility: hidden;
+}
+
+div.poster-thumb:hover  .label {
+    visibility: visible;
+}
+
+.bgShade {
+    background-color: black;
+    opacity: .8;
+    height: 40px;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+}
+
+.moviePosterDisplay {
+    background-size:cover;
+    height: 100%;
+    width:34%;
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+    background-size: cover;
+    z-index: -1;
+}
+
+.translucent{
+    opacity:.17;
+}
+
+.opac{
+    opacity:1;
+}

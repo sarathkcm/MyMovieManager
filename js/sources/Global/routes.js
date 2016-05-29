@@ -17,6 +17,9 @@ angular.module('MyMovieManager')
                 })
                 .state('Home', {
                     url: '/Home',
-                    templateUrl: './pages/Views/Display/thumbnailView.html'
+                    templateProvider: function (SettingsService) {
+                        return `<div ng-include = "'./pages/Views/Display/Themes/${SettingsService.Settings.Themes.CurrentTheme}/thumbnailView.html'"></div>`;
+                    },
+                    controller: 'ThumbnailViewController'
                 });
         }]);
