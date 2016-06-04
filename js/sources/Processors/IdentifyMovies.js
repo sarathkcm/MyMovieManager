@@ -2,7 +2,7 @@
     var sourceWindowId;
     try {
         "use strict";
-        var _ = require('underscore');
+        var _ = _ || require('lodash');
         var fs = require('fs');
         var path = require('path');
         var angular = require('angular');

@@ -6,7 +6,7 @@
                 $scope.DisplayedMedia = [];
                 $scope.Filters = {
                     Watched: function (mediaList) {
-                        return _(mediaList).filter(function (media) {
+                        return _(mediaList).filter( media => {
                             switch ($scope.NowShowing) {
                                 case "NotWatched":
                                     return !media.iswatched;
@@ -15,7 +15,7 @@
                                 default:
                                     return true;
                             }
-                        });
+                        }).value();
                     }
                 };
 

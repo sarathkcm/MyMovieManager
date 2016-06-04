@@ -18,12 +18,10 @@
             };
 
             $rootScope.$on('displayed-list-changed', function () {
-                var genres = _.flatten(_($scope.DisplayedMedia).select(media => media.metadata.genres));
-                var uniqueGenres = _.unique(genres);
-                $scope.Genres = _.compact(uniqueGenres);
+                $scope.Genres =  _($scope.DisplayedMedia).map(media => media.metadata.genres).flatten().uniq().compact().value();
                 $scope.Genres.unshift("All");
                 $scope.Genres.push("No Category");
-                var selectedGenre = _($scope.Genres).find(g => $scope.SelectedGenre);
+                var selectedGenre = _($scope.Genres).find(g => g === $scope.SelectedGenre).value();
                 if (selectedGenre)
                     $scope.SelectedGenre = selectedGenre;
                 else

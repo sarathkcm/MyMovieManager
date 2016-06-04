@@ -15,7 +15,7 @@
     "font-awesome": "^4.6.1",
     "jquery": "^2.2.3",
     "angular": "^1.5.5",
-    "underscore": "^1.8.3",
+    "lodash": "^4.13.1",
     "request": "^2.72.0",
     "themoviedbclient": "^0.1.0",
     "jimp":"^0.2.24",

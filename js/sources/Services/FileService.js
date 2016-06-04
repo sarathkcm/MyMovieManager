@@ -18,27 +18,27 @@
                     return filelist;
 
                 return _(filelist).filter(function (file) {
-                    return _(fileExtensions).any(function (format) {
+                    return _(fileExtensions).some(function (format) {
                         return file.endsWith(format);
-                    });
-                });
+                    }).value();
+                }).value();
             };
 
             Service.GetFiles = function (dir, fileExtensions) {
                 var files = fs.readdirSync(dir);
 
                 var fileList = _(files).map(function (file) {
-                    return path.join(dir, path.sep, file)
-                });
+                    return path.join(dir, path.sep, file);
+                }).value();
 
                 if (!fileExtensions)
                     return fileList;
 
                 return _(fileList).filter(function (file) {
-                    return _(fileExtensions).any(function (format) {
+                    return _(fileExtensions).some(function (format) {
                         return file.endsWith(format);
-                    });
-                });
+                    }).value();
+                }).value();
 
             }
 

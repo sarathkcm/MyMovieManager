@@ -27,9 +27,9 @@
             };
 
             Service.Save = function () {
-                var groups = _(Service.AllMedia).groupBy(media => media.$$Folder.Path);
-                _(_(groups).keys()).each(key => {
-                    MediaService.SaveMediaListToFile(key, groups[key])
+                var groups = _(Service.AllMedia).groupBy(media => media.$$Folder.Path).value();
+                _(groups).keys().each(key => {
+                    MediaService.SaveMediaListToFile(key, groups[key]);
                 });
             };
 

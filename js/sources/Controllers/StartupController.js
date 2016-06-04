@@ -15,7 +15,7 @@
                 MediaService.ScanMediaFiles()
                     .then(() => {
                         MediaStore.Reload();
-                        var notUpdatedMediaList = _(MediaStore.AllMedia).filter(media => !media.isupdatedonce);
+                        var notUpdatedMediaList = _(MediaStore.AllMedia).filter(media => !media.isupdatedonce).value();
                         return MediaService.UpdateMediaMetaData(notUpdatedMediaList);
                     }).then(mediaList => {
                         MediaStore.UpdateMediaList(mediaList);
