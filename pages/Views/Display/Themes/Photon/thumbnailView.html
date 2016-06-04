@@ -1,16 +1,17 @@
-<link href="./pages/Views/Display/Themes/Photon/photon-0.1.2-dist/css/photon.min.css" type="text/css" rel="stylesheet">
-</link>
-<link href="./pages/Views/Display/Themes/Photon/styles.css" type="text/css" rel="stylesheet">
-</link>
-<div ng-controller="HomeController.Photon">
-    <div class="window-content window-border">
-        <div class="pane-group">
-            <div class="pane" style="background-color:#EFEAEA">
-                <div class="toolbar toolbar-header" style="position:fixed;height:32px;width:66.6%;-webkit-app-region: no-drag;padding:4px;">
-                    <div class="btn-group">
-                        <input class="input-box btn hBorder" type="text" placeholder="Search for movies">
+<link href="./pages/Views/Display/Themes/Photon/photon-0.1.2-dist/css/photon.min.css" type="text/css" rel="stylesheet"></link>
+<link href="./pages/Views/Display/Themes/Photon/styles.css" type="text/css" rel="stylesheet"></link>
 
-                        <select class="select-box btn hBorder">
+
+<div ng-controller="HomeController.Photon" class="window">
+    <header class="toolbar toolbar-header">
+        <h1 class="title">My Movie Manager</h1>
+    </header>
+    <div class="toolbar toolbar-header" style="position:fixed;height:32px;width:100%;-webkit-app-region: no-drag;padding:4px;">
+        <div class="btn-group">
+            <input class="input-box btn hBorder" type="text" placeholder="Search for movies">
+
+            <select class="select-box btn hBorder">
+                                <option>All</option>
                                 <option>Title</option>
                                 <option>Director</option>
                                 <option>Cast</option>
@@ -19,69 +20,71 @@
                                 <option>Language</option>
                                 <option>Country</option>
                             </select>
-                    </div>
-
-                    <div class="btn-group">
-                        <select class="select-box hBorder" ng-options="genre for genre in Genres" ng-model="SelectedGenre" style="width:120px">
-                            </select>
-                    </div>
-
-                    <div class="btn-group">
-                        <button class="btn btn-default" ng-click="DisplayWatched('All')" ng-class='NowShowing == "All"? "active":""'>All</button>
-                        <button class="btn btn-default" ng-click="DisplayWatched('Watched')" ng-class='NowShowing == "Watched"? "active":""'>Watched</button>
-                        <button class="btn btn-default" ng-click="DisplayWatched('NotWatched')" ng-class='NowShowing == "NotWatched"? "active":""'>Not Watched</button>
-                    </div>
-
-
-                </div>
-                <div style="height:30px;"></div>
-
-                <div class="thumb-view-panel grid" ng-click="SelectMovie($event)" style="background-color:#EFEAEA">
-                    <span ng-repeat="movie in DisplayedMedia" class="poster-thumb grid-item" ng-dblclick="OpenMovie($event,movie)" ng-class="movie.highlighted?'highlighted':''">
-							<div class="movie-name-thumb" ng-click="SelectMovie($event,movie)" >
-								<span class="thumbnail tile">
-								<img ng-src="{{movie.postersmall?'file://'+ movie.$$Folder.Path + '/' + movie.postersmall: './images/defaultFolderSmall.jpg'}}" class="img-thumb-movie"></img>
-								</span>
-
-                    <div class="text-movie-thumb">{{movie.Title[0]}}</div>
-                </div>
-                </span>
-            </div>
         </div>
-        <div class="pane-one-third">
-            <div class="moviePosterDisplay" style="background-image: url('{{SelectedMovie.poster}}');" ng-class="SelectedMovie.$$ShowPoster? 'opac': 'translucent'">
+
+        <div class="btn-group">
+            <select class="select-box hBorder" ng-options="genre for genre in Genres" ng-model="SelectedGenre" style="width:120px">
+                            </select>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-default" ng-click="DisplayWatched('All')" ng-class='NowShowing == "All"? "active":""'>All</button>
+            <button class="btn btn-default" ng-click="DisplayWatched('Watched')" ng-class='NowShowing == "Watched"? "active":""'>Watched</button>
+            <button class="btn btn-default" ng-click="DisplayWatched('NotWatched')" ng-class='NowShowing == "NotWatched"? "active":""'>Not Watched</button>
+        </div>
+
+
+    </div>
+    <div style="height:33px;"></div>
+    <div class="window-content">
+        <div class="pane-group">
+            <div class="pane" style="overflow:hidden">
+                <div ng-click="SelectMedia($event)" style="background-color:#EFEAEA;overflow:auto;height:100%;" class="thumb-view-panel grid">
+                    <span ng-repeat="media in DisplayedMedia" class="poster-thumb grid-item" ng-click="SelectMedia($event,media)" ng-class="media.$$Selected? 'highlighted':''"> 
+								<span class="thumbnail tile">
+								    <img ng-src="{{media.postersmall?'file://'+ media.$$Folder.Path + '/' + media.postersmall: './images/defaultFolderSmall.jpg'}}" class="img-thumb-movie"></img>
+								</span>
+                                
+                    <div class="text-movie-thumb">{{media.metadata.title }} {{ media.metadata.year && "["+ media.metadata.year+ "]" }}</div>
+                    </span>
+                </div>
+
+            </div>
+            <div class="pane-one-third" style="">
+                
+                 <div class="moviePosterDisplay"  ng-class="SelectedMedia.$$ShowPoster? 'opac': 'translucent'"  style="background-image:url('{{SelectedMedia.$$PosterPath}}')">
             </div>
             <div>
                 <div>
                     <div class="toolbar-actions" style="text-align:center;">
                         <div class="btn-group">
-                            <button class="btn btn-default hand" ng-click="SelectedMovie.$$ShowPoster=!SelectedMovie.$$ShowPoster;" ng-class="SelectedMovie.$$ShowPoster? 'active':''">
+                            <button class="btn btn-default hand" ng-click="SelectedMedia.$$ShowPoster=!SelectedMedia.$$ShowPoster;" ng-class="SelectedMedia.$$ShowPoster? 'active':''">
                                     <span class="icon icon-eye hand"></span>
                                 </button>
-                            <button class="btn btn-default hand" ng-click="openMovie($event,SelectedMovie)">
+                            <button class="btn btn-default hand" ng-click="openMovie($event,SelectedMedia)">
                                     <span class="icon icon-play hand"></span>
                                 </button>
-                            <button class="btn btn-default hand" ng-click="openMovie($event,SelectedMovie)">
+                            <button class="btn btn-default hand" ng-click="openMovie($event,SelectedMedia)">
                                     <span class="icon icon-video hand"></span>
                                 </button>
-                            <button class="btn btn-default hand" ng-click="openFolder($event,SelectedMovie.metadata.$$Folder)">
+                            <button class="btn btn-default hand" ng-click="openFolder($event,SelectedMedia.metadata.$$Folder)">
                                     <span class="icon icon-folder hand"></span>
                                     <!--style="color:#FFAA00"-->
                                 </button>
-                            <button class="btn btn-default hand" ng-class="SelectedMovie.iswatched?'active':''" ng-click="ToggleWatched(SelectedMovie)">
+                            <button class="btn btn-default hand" ng-class="SelectedMedia.iswatched?'active':''" ng-click="ToggleWatched(SelectedMedia)">
                                     <span class="icon icon-check hand"></span>
                                 </button>
-                            <button class="btn btn-default hand">
-                                    <span class="fa fa-edit hand" style="font-size:14px;vertical-align:middle"></span>
+                            <button class="btn btn-default hand" style="height:24px">
+                                    <span class="fa fa-edit hand" style="font-size:14px;vertical-align:middle;"></span>
                                 </button>
                             <button class="btn btn-default hand">
                                     <span class="icon icon-trash hand"></span>
                                 </button>
-                            <button class="btn btn-default hand" ng-click="ToggleFavourite(SelectedMovie)" ng-class="SelectedMovie.favourite?'active':''">
-                                    <span class="icon icon-heart-empty hand" ng-class="SelectedMovie.favourite=='Yes'?'icon-heart':'icon-heart-empty'"></span>
+                            <button class="btn btn-default hand" ng-click="ToggleFavourite(SelectedMedia)" ng-class="SelectedMedia.favourite?'active':''">
+                                    <span class="icon icon-heart-empty hand" ng-class="SelectedMedia.favourite=='Yes'?'icon-heart':'icon-heart-empty'"></span>
                                     <!--style="color:crimson"-->
                                 </button>
-                            <button class="btn btn-default hand" ng-click="OpenImdb(SelectedMovie)">
+                            <button class="btn btn-default hand" ng-click="OpenImdb(SelectedMedia)">
                                     <span class="icon socicon-imdb hand" style="font-size:22px;position:relative;left:-5px;top:-5px;"></span>
                                 </button>
                             <button class="btn btn-default hand">
@@ -89,20 +92,26 @@
                                 </button>
                         </div>
                     </div>
-                    <div ng-show="!SelectedMovie.$$ShowPoster">
-                        <div style="text-align:center;font-size:24px;font-weight:bold"> {{SelectedMovie.metadata.title}}</div>
-                        <div style="text-align:center;font-size:15px;font-weight:bold">{{SelectedMovie.metadata.year}}</div>
+                    <div ng-show="!SelectedMedia.$$ShowPoster">
+                        <div style="text-align:center;font-size:24px;font-weight:bold"> {{SelectedMedia.metadata.title}}</div>
+                        <div style="text-align:center;font-size:15px;font-weight:bold">{{SelectedMedia.metadata.year}}</div>
                         <br/>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMovie.metadata.synopsis}}<span class="fa fa-quote-right super-script"></span></div>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Directed by: </b>{{SelectedMovie.metadata.directors | displayDictionary}}</div>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Runtime: </b>{{SelectedMovie.metadata.duration}}</div>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Languages: </b>{{SelectedMovie.metadata.languages| displayDictionary}}</div>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Countries: </b>{{SelectedMovie.metadata.country}}</div>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Genres: </b>{{SelectedMovie.metadata.genres | displayDictionary}} </div>
-                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Cast: </b>{{SelectedMovie.metadata.cast | displayDictionary}}</div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><span class="fa fa-quote-left super-script"></span>{{SelectedMedia.metadata.synopsis}}<span class="fa fa-quote-right super-script"></span></div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Directed by: </b>{{SelectedMedia.metadata.directors | displayDictionary}}</div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Runtime: </b>{{SelectedMedia.metadata.duration}}</div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Languages: </b>{{SelectedMedia.metadata.language| displayDictionary}}</div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Countries: </b>{{SelectedMedia.metadata.country| displayDictionary}}</div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Genres: </b>{{SelectedMedia.metadata.genres | displayDictionary}} </div>
+                        <div style="text-align:justify;font-size:14px;font-weight:normal;margin:8px;"><b>Cast: </b>{{SelectedMedia.metadata.cast | displayDictionary}}</div>
                     </div>
                 </div>
             </div>
+            </div>
         </div>
+
+
     </div>
+    <footer class="toolbar toolbar-footer">
+        <h1 class="title"></h1>
+    </footer>
 </div>

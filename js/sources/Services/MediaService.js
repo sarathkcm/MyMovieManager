@@ -2,7 +2,7 @@
     angular.module("MyMovieManager")
         .service("MediaService",
         ['DataService', 'FileService', 'SettingsService', 'MetadataService', function (DataService, Files, SettingsService, MetaDataService) {
-            
+
             var Service = this;
             Service.SaveMediaListToFile = function (folder, mediaList) {
                 var dataStorage = Files.GetDataStorageDetails(folder, true);
@@ -19,8 +19,17 @@
                         var mediaFile = MetaDataService.GetOfflineMetadata(media, folder);
                         mediaFilesInfo.push(mediaFile);
                     }
-                })
+                });
                 DataService.SaveDataToFile(dataStorage.File, mediaFilesInfo);
+            };
+
+            var SetPosterPath = function (media) {
+                if (media && media.$$Folder) {
+                    var url = "file:///" + media.$$Folder.Path + path.sep + media.poster;
+                    media.$$PosterPath = url.replace(/\\/g, "\\\\");
+                }
+                else
+                    media.$$PosterPath = "";
             };
 
             Service.GetMediaList = function () {
@@ -30,8 +39,9 @@
                     var list = DataService.ReadDataFromFile(dataStorage.File);
                     _(list).each(item => {
                         item.$$Folder = folder;
+                        SetPosterPath(item);
                         mediaList.push(item);
-                    })
+                    });
                 });
                 return mediaList;
             };

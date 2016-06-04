@@ -2,10 +2,12 @@
     angular.module('MyMovieManager')
         .controller('HomeController.Photon', ['$scope', '$rootScope', function name($scope, $rootScope) {
             $scope.Genres = [];
-            $scope.SelectMedia = function (media) {
-                _($scope.DisplayedMedia).each(item => item.$$Selected = false);
-                media.$$Selected = true;
-                $scope.SelectedMedia = media;
+            $scope.SelectMedia = function ($event, media) {
+                if (media) {
+                    _($scope.DisplayedMedia).each(item => { item.$$Selected = false; });
+                    media.$$Selected = true;
+                    $scope.SelectedMedia = media;
+                }
             };
 
             $scope.ShowPoster = function () {
@@ -16,12 +18,12 @@
                 $scope.NowShowing = state;
                 $scope.ApplyFilters();
             };
-
+            
             $rootScope.$on('displayed-list-changed', function () {
-                $scope.Genres =  _($scope.DisplayedMedia).map(media => media.metadata.genres).flatten().uniq().compact().value();
+                $scope.Genres = _($scope.DisplayedMedia).map(media => media.metadata.genres).flatten().uniq().compact().value();
                 $scope.Genres.unshift("All");
                 $scope.Genres.push("No Category");
-                var selectedGenre = _($scope.Genres).find(g => g === $scope.SelectedGenre).value();
+                var selectedGenre = _($scope.Genres).find(g => g === $scope.SelectedGenre);
                 if (selectedGenre)
                     $scope.SelectedGenre = selectedGenre;
                 else
@@ -29,4 +31,5 @@
 
             });
         }]);
+
 })();
