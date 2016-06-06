@@ -215,22 +215,3 @@ body {
  
 }
 
-.fa-sized{
-    font-size: 9px;
-}
-
-.win-btn{
-    float:right; 
-    margin-right:2px;
-    margin-top:3px;
-    color:#02082D;
-    cursor: pointer;
-}
-.win-btn:hover{
-    color: mediumblue;
-    cursor: pointer;
-}
-
-.win-btn>i{
-    cursor: pointer;
-}
