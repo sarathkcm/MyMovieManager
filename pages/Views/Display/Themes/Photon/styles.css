@@ -35,7 +35,7 @@ body {
 
 .highlighted{
     background-color:#02082D;
-    border-radius: 3px;
+    border-radius: 1px;
     color: white;
 }
 .poster-thumb{
@@ -63,11 +63,27 @@ body {
 .text-movie-thumb{
 	width: 100%;
 	text-overflow: ellipsis;
-	text-align: center;
 	font-size: 9pt;
     line-height: 110%;
     padding-top: 4px;
+    overflow:hidden;
     height: 100%;
+}
+.text-movie-thumb-title{
+    font-size: 9pt;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 130px;
+    overflow:hidden;
+    float: left;
+    margin-left: 11px;
+    font-weight: 600;
+}
+.text-movie-thumb-year{
+    font-size: 7pt;
+    color: grey;
+    float: left;
+    margin-left: 11px;    
 }
 
 .img-thumb-movie{
@@ -197,4 +213,24 @@ body {
 .hBorder:focus ~ .hBorder{
  border:1px solid dodgerblue; 
  
+}
+
+.fa-sized{
+    font-size: 9px;
+}
+
+.win-btn{
+    float:right; 
+    margin-right:2px;
+    margin-top:3px;
+    color:#02082D;
+    cursor: pointer;
+}
+.win-btn:hover{
+    color: mediumblue;
+    cursor: pointer;
+}
+
+.win-btn>i{
+    cursor: pointer;
 }
