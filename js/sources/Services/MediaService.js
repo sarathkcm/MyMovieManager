@@ -75,8 +75,8 @@
                         const ipcRenderer = require('electron').ipcRenderer;
                         const path = require('path');
                         const currentWindowId = BrowserWindow.getFocusedWindow().id;
-                        const processorPath = 'file://' + path.join(__dirname, '/pages/Processors/IdentifyMovies.html')
-                        let win = new BrowserWindow({ width: 400, height: 400, show: false });
+                        const processorPath = 'file://' + path.join(__dirname, '/pages/Processors/IdentifyMovies.html');
+                        let win = new BrowserWindow({ width: 400, height: 400, show: true });
                         win.loadURL(processorPath);
 
                         win.webContents.on('did-finish-load', function () {

@@ -20,7 +20,7 @@
                 return _(filelist).filter(function (file) {
                     return _(fileExtensions).some(function (format) {
                         return file.endsWith(format);
-                    }).value();
+                    });
                 }).value();
             };
 
@@ -37,10 +37,10 @@
                 return _(fileList).filter(function (file) {
                     return _(fileExtensions).some(function (format) {
                         return file.endsWith(format);
-                    }).value();
+                    });
                 }).value();
 
-            }
+            };
 
             Service.IsDirectory = function (path) {
                 try {
