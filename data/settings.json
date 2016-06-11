@@ -12,7 +12,8 @@
             "Photon": {
                 "Page": "index.html",
                 "Scripts": [
-                    "main.js"
+                    "main.js",
+                    "routes.js"
                 ]
             },
             "Native": {

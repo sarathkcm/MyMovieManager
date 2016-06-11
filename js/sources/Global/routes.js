@@ -1,6 +1,8 @@
 angular.module('MyMovieManager')
-    .config(['$stateProvider', '$urlRouterProvider',
-        function ($stateProvider, $urlProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'ReferenceProvider',
+        function ($stateProvider, $urlProvider, refProvider) {
+            refProvider.addReference("$stateProvider", $stateProvider);
+            refProvider.addReference("$urlProvider", $urlProvider);
             $urlProvider.otherwise('/');
             $stateProvider
                 .state('/', {

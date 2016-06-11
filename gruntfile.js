@@ -9,6 +9,7 @@ module.exports = function (grunt) {
                 src: [
                     'js/sources/Global/modules.js',
                     'js/sources/Global/ng-modules.js',
+                    'js/sources/Global/ReferenceProvider.js',
                     'js/sources/Global/routes.js',
                     'js/sources/Filters/**/*.js',
                     'js/sources/Services/**/*.js',
