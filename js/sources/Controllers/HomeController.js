@@ -1,21 +1,19 @@
 (function () {
     angular.module("MyMovieManager")
-        .controller("HomeController", ["$scope", "$rootScope", "MediaStore", "$timeout",
-            function ($scope, $rootScope, MediaStore, $timeout) {
+        .controller("HomeController", ["$scope", "$rootScope", "MediaStore", "$timeout", "SearchService",
+            function ($scope, $rootScope, MediaStore, $timeout, SearchService) {
 
                 $scope.DisplayedMedia = [];
                 $scope.Filters = {
-                    Watched: function (mediaList) {
-                        return _(mediaList).filter( media => {
-                            switch ($scope.NowShowing) {
-                                case "NotWatched":
-                                    return !media.iswatched;
-                                case "Watched":
-                                    return media.iswatched;
-                                default:
-                                    return true;
-                            }
-                        }).value();
+                    Watched: function (media) {
+                        switch ($scope.NowShowing) {
+                            case "NotWatched":
+                                return !media.iswatched;
+                            case "Watched":
+                                return media.iswatched;
+                            default:
+                                return true;
+                        }
                     }
                 };
 
@@ -25,11 +23,11 @@
                 };
 
                 $timeout($scope.Initialize, 50);
-                
+
                 $scope.ApplyFilters = function () {
                     var allMedia = MediaStore.AllMedia;
                     for (var key in $scope.Filters) {
-                        allMedia = $scope.Filters[key](allMedia);
+                        allMedia = _(allMedia).filter(m => $scope.Filters[key](m));
                     }
                     _(allMedia).each(element => {
                         var movie = $scope.DisplayedMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
@@ -41,9 +39,23 @@
                             $scope.DisplayedMedia.push(element);
                         }
                     });
+                    _($scope.DisplayedMedia).each(el => {
+                        var movie = allMedia.find(m => m.$$Folder.Path + m.filename === el.$$Folder.Path + el.filename);
+                        if (!movie)
+                            _($scope.DisplayedMedia).remove(item => item === el);
+                    });
                     $rootScope.$broadcast('displayed-list-changed', $scope.DisplayedMedia);
                 };
 
+
+                $scope.Search = function (text) {
+                    var movies = SearchService.Search(text, MediaStore.AllMedia, "Title");
+                    $scope.Filters.Search = media => {
+                        return _(movies).some(m => m.$$Folder.Path + m.filename === media.$$Folder.Path + media.filename);
+                    };
+                    $scope.ApplyFilters();
+                    _($scope.Filters).unset("Search");
+                };
 
                 $rootScope.$on('media-list-changed', function () {
                     $scope.ApplyFilters();

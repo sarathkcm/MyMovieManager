@@ -10,20 +10,16 @@
         "CurrentTheme": "Photon",
         "AvailableThemes": {
             "Photon": {
-                "Home": {
-                    "Page": "thumbnailView.html",
-                    "Scripts": [
-                        "scripts.js"
-                    ]
-                }
+                "Page": "index.html",
+                "Scripts": [
+                    "main.js"
+                ]
             },
             "Native": {
-                "Home": {
-                    "Page": "thumbnailView.html",
-                    "Scripts": [
-                        "scripts.js"
-                    ]
-                }
+                "Page": "index.html",
+                "Scripts": [
+                    "main.js"
+                ]
             }
         }
     }

@@ -15,5 +15,11 @@
             Service.SaveWatchedFolders = function () {
                 DataService.SaveDataToFile(WatchedFoldersFile, Service.WatchedFolders);
             };
+            Service.LoadSettings = function () {
+               Service.Settings = DataService.ReadDataFromFile(SettingsFile);
+            };
+            Service.LoadWatchedFolders = function () {
+                Service.WatchedFolders = DataService.ReadDataFromFile(WatchedFoldersFile);
+            };
         }]);
 })();

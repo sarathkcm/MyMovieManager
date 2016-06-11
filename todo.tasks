@@ -2,5 +2,7 @@ Display:
     ☐ Use https://github.com/olton/Metro-UI-CSS for Metro style theming.
     ☐ Use photonkit UI for Mac OS style theming.
 Data Storage:
-    ☐ Generate User Specific has based on time and MAC Address, store user rating and comments for movies
+    ☐ Generate User Specific hash based on time and MAC Address, store user rating and comments for movies
     ☐ Preserve state for views in Service
+Search:
+    ☐ Include aka in title searches

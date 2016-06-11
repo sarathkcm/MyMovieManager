@@ -1,4 +1,4 @@
-(function (params) {
+(function () {
     angular.module("MyMovieManager")
         .directive("tagDisplay", function () {
             return {

@@ -8,7 +8,7 @@
     </header>
     <div class="toolbar toolbar-header" style="position:fixed;height:32px;width:100%;-webkit-app-region: no-drag;padding:4px;">
         <div class="btn-group">
-            <input class="input-box btn hBorder" type="text" placeholder="Search for movies">
+            <input class="input-box btn hBorder" type="text" ng-model="SearchText" ng-enter="Search(SearchText)" placeholder="Search for movies" >
 
             <select class="select-box btn hBorder">
                                 <option>All</option>
