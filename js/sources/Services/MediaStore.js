@@ -39,7 +39,7 @@
                     if (movie) {
                         if (!movie.metadata)
                             movie.metadata = {};
-                        _(movie.metadata).extend(element.metadata);
+                        _(movie.metadata).extend(element.metadata).value();
                     }
                     else {
                         Service.AllMedia.push(element);

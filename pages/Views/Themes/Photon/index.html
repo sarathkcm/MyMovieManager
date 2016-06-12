@@ -1,21 +1,19 @@
 <link href="./pages/Views/Themes/Photon/photon-0.1.2-dist/css/photon.min.css" type="text/css" rel="stylesheet"></link>
 <link href="./pages/Views/Themes/Photon/styles.css" type="text/css" rel="stylesheet"></link>
 
-<div ng-controller="Photon.HomeController" class="window">
+<div ng-controller="Photon.HomeController" class="window" ng-init="Initialize()">
     <header class="toolbar toolbar-header" style="text-align:center;">
         <span style="font-weight:600;padding:10px;width:100%;">My Movie Manager</span>
     </header>
-    <div class="toolbar toolbar-header" style="position:fixed;height:32px;width:100%;-webkit-app-region: no-drag;padding:4px;">
-        <div ui-view="toolbar"></div>
+    <div class="toolbar toolbar-header" style="position:fixed;height:32px;width:100%;-webkit-app-region: no-drag;padding:4px;"
+        ui-view="toolbar">
     </div>
     <div style="height:33px;"></div>
     <div class="window-content">
         <div class="pane-group">
-            <div class="pane" style="overflow:hidden">
-                <div ui-view="grid"></div>
+            <div class="pane" style="overflow:hidden" ui-view="grid">
             </div>
-            <div class="pane-one-third" style="">
-                <div ui-view="details"></div>
+            <div class="pane-one-third" ui-view="details">
             </div>
         </div>
     </div>

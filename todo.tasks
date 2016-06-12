@@ -6,3 +6,7 @@ Data Storage:
     ☐ Preserve state for views in Service
 Search:
     ☐ Include aka in title searches
+Metadata:
+    ☐ Try other APIs
+    ☐ Standard JSON format for storing metadata
+    ☐ While updating metadata instantly update the corresponding item in the grid through messaging. 

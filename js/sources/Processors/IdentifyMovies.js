@@ -71,7 +71,7 @@
 
 
                     mediaList[ind].type = data.type;
-                    _(mediaList[ind].metadata).extend(data.metadata);
+                    _(mediaList[ind].metadata).extend(data.metadata).value();
 
                     if (!mediaList[ind].poster && data.metadata.cover) {
                         var posterUrl = getImdbImageUrl(data.metadata.cover, 1024);
@@ -123,7 +123,7 @@
                 if (movie) {
                     if (!movie.metadata)
                         movie.metadata = {};
-                    _(movie.metadata).extend(mediaList[ind].metadata);
+                    _(movie.metadata).extend(mediaList[ind].metadata).value();
                     movie.isupdatedonce = mediaList[ind].isupdatedonce;
                 }
                 else {
