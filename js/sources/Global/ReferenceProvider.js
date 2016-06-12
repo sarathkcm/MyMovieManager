@@ -1,7 +1,7 @@
 (function () {
     var references = {};
     angular.module('MyMovieManager')
-        .provider("Reference", function () {
+        .provider("References", function () {
             this.$get = function () {
                 return {
                     get: function (name) {

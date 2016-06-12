@@ -1,14 +1,31 @@
 (function () {
+    var Configured = false;
     angular.module("MyMovieManager")
-        .service("Photon.RouteService", ["Reference", function (Reference) {
-            this.Configured = false;
+        .service("Photon.RouteService", ["References", function (References) {
             this.Configure = function () {
-                if (this.Configured)
+                if (Configured)
                     return;
-                var $stateProvider = Reference.get("$stateProvider");
-                var $urlProvider = Reference.get("$urlProvider");
+                var $stateProvider = References.get("$stateProvider");
+                var $urlProvider = References.get("$urlProvider");
+
+                $stateProvider
+                    .state('Home.View', {
+                        url: '/Home/View',
+                        views: {
+                            grid: {
+                                templateUrl: './pages/Views/Themes/Photon/Home/grid.html'
+                            },
+                            details: {
+                                templateUrl: './pages/Views/Themes/Photon/Home/detailsPanel.html'
+                            },
+                            toolbar: {
+                                templateUrl: './pages/Views/Themes/Photon/Home/toolbar.html'
+                            }
+                        }
+                    });
+
                 console.log($stateProvider, $urlProvider);
-                this.Configured = true;
+                Configured = true;
             };
 
         }]);

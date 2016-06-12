@@ -1,5 +1,5 @@
 angular.module('MyMovieManager')
-    .config(['$stateProvider', '$urlRouterProvider', 'ReferenceProvider',
+    .config(['$stateProvider', '$urlRouterProvider', 'ReferencesProvider',
         function ($stateProvider, $urlProvider, refProvider) {
             refProvider.addReference("$stateProvider", $stateProvider);
             refProvider.addReference("$urlProvider", $urlProvider);
@@ -32,7 +32,11 @@ angular.module('MyMovieManager')
                             }, this);
                             return $ocLazyLoad.load(scripts);
                         }
-                    }
+                    },
+                    controllerProvider: function (SettingsService) {
+                        var theme = SettingsService.Settings.Themes.AvailableThemes[SettingsService.Settings.Themes.CurrentTheme];
+                        return theme.Controller;
+                    },
                 });
 
         }]);

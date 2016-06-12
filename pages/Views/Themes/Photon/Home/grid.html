@@ -1,0 +1,14 @@
+<div ng-click="SelectMedia($event)" style="background-color:#EFEAEA;overflow:auto;height:100%;" class="thumb-view-panel grid">
+    <span ng-repeat="media in DisplayedMedia" class="poster-thumb grid-item" ng-click="SelectMedia($event,media)" ng-class="media.$$Selected? 'highlighted':''"
+        title="{{media.metadata.title}}"> 
+								<span class="thumbnail tile">
+								    <img ng-src="{{media.postersmall?'file://'+ media.$$Folder.Path + '/' + media.postersmall: './images/defaultFolderSmall.jpg'}}" class="img-thumb-movie"></img>
+								</span>
+
+    <div class="text-movie-thumb">
+        <span class="text-movie-thumb-title">{{media.metadata.title}}</span>
+        <br/>
+        <span class="text-movie-thumb-year">{{media.metadata.year}}</span>
+    </div>
+    </span>
+</div>

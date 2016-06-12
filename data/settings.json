@@ -13,14 +13,17 @@
                 "Page": "index.html",
                 "Scripts": [
                     "main.js",
-                    "routes.js"
-                ]
+                    "routes.js",
+                    "HomeController.js"
+                ],
+                "Controller":"Photon.MainController"
             },
             "Native": {
                 "Page": "index.html",
                 "Scripts": [
                     "main.js"
-                ]
+                ],
+                "Controller":"Photon.MainController"
             }
         }
     }
