@@ -53,41 +53,43 @@
                     }
                 };
 
-
-
-
                 $scope.ApplyFilters = function () {
                     var allMedia = MediaStore.AllMedia;
-                    
+
                     _($scope.Filters).keys().each(key => {
                         allMedia = _(allMedia).filter(m => $scope.Filters[key](m)).value();
                     });
-                    _(allMedia).each(element => {
-                        var movie = $scope.DisplayedMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
-                        if (movie) {
-                            _(movie).extend(element).value();
-                            element = movie;
-                        }
-                        else {
-                            $scope.DisplayedMedia.push(element);
-                        }
-                    });
-                    _($scope.DisplayedMedia).each(el => {
-                        var movie = allMedia.find(m => m.$$Folder.Path + m.filename === el.$$Folder.Path + el.filename);
-                        if (!movie)
-                            _($scope.DisplayedMedia).remove(item => item === el).value();
-                    });
+                    $scope.DisplayedMedia = allMedia;
+                    // _(allMedia).each(element => {
+                    //     var movie = $scope.DisplayedMedia.find(m => m.$$Folder.Path + m.filename === element.$$Folder.Path + element.filename);
+                    //     if (movie) {
+                    //         _(movie).extend(element).value();
+                    //         element = movie;
+                    //     }
+                    //     else {
+                    //         $scope.DisplayedMedia.push(element);
+                    //     }
+                    // });
+                    // _($scope.DisplayedMedia).each(el => {
+                    //     var movie = allMedia.find(m => m.$$Folder.Path + m.filename === el.$$Folder.Path + el.filename);
+                    //     if (!movie)
+                    //         _($scope.DisplayedMedia).remove(item => item === el).value();
+                    // });
                 };
 
 
                 $scope.Search = function (text) {
-                    var movies = SearchService.Search(text, MediaStore.AllMedia, "Title");
-                    $scope.Filters.Search = media => {
-                        return _(movies).some(m => m.$$Folder.Path + m.filename === media.$$Folder.Path + media.filename);
-                    };
+                    if (!text) {
+                        _.unset($scope.Filters, "Search");
+                    }
+                    else {
+                        var movies = SearchService.Search(text, MediaStore.AllMedia, "Title");
+                        $scope.Filters.Search = media => {
+                            return _(movies).some(m => m.$$Folder.Path + m.filename === media.$$Folder.Path + media.filename);
+                        };
+                    }
                     $scope.ApplyFilters();
                     $scope.SelectDefaultMedia();
-                    _($scope.Filters).unset("Search");
                 };
 
                 $rootScope.$on('media-list-changed', function () {
@@ -96,7 +98,7 @@
                     $scope.SelectDefaultMedia();
                 });
 
-                $scope.SelectDefaultMedia = function(){
+                $scope.SelectDefaultMedia = function () {
                     if (!$scope.DisplayedMedia || !$scope.DisplayedMedia.length)
                         return;
                     if (!$scope.SelectedMedia) {
