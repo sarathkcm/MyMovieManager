@@ -1,0 +1,10 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "jshint.options": {
+        "undef": true,
+        "unused": true,
+        "esversion": 6,
+        "node": true,
+        "predef": [ "angular","_" ]
+    }
+}
