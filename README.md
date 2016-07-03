@@ -20,3 +20,4 @@ npm run build-all
 
 npm start
 ```
+If npm start doesn't work, run the command in NodeJS command prompt or install electron-prebuilt globally.
