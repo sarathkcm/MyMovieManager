@@ -7,13 +7,13 @@
                 <button class="btn btn-default hand" ng-click="SelectedMedia.$$ShowPoster=!SelectedMedia.$$ShowPoster;" ng-class="SelectedMedia.$$ShowPoster? 'active':''">
                                     <span class="icon icon-eye hand"></span>
                                 </button>
-                <button class="btn btn-default hand" ng-click="openMovie($event,SelectedMedia)">
+                <button class="btn btn-default hand" ng-click="Open($event,SelectedMedia)">
                                     <span class="icon icon-play hand"></span>
                                 </button>
-                <button class="btn btn-default hand" ng-click="openMovie($event,SelectedMedia)">
+                <button class="btn btn-default hand" ng-click="Open($event,SelectedMedia)">
                                     <span class="icon icon-video hand"></span>
                                 </button>
-                <button class="btn btn-default hand" ng-click="openFolder($event,SelectedMedia.metadata.$$Folder)">
+                <button class="btn btn-default hand" ng-click="OpenFolder($event,SelectedMedia)">
                                     <span class="icon icon-folder hand"></span>
                                     <!--style="color:#FFAA00"-->
                                 </button>

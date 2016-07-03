@@ -2,11 +2,19 @@
     angular.module('MyMovieManager')
         .controller('Photon.HomeController', ['$scope', '$rootScope', 'MediaStore', 'SearchService',
             function name($scope, $rootScope, MediaStore, SearchService) {
+                const path = require("path");
                 $scope.Genres = [];
                 $scope.DisplayedMedia = [];
 
+                $scope.Flags = {
+                    NowShowing: "All",
+                    SelectedGenre: "All",
+                    SearchType: "",
+                    SearchText: ""
+                };
+
                 $scope.Initialize = function () {
-                    $scope.NowShowing = "All";
+                    $scope.Flags.NowShowing = "All";
                     $scope.PopulateGenres();
                     $scope.ApplyFilters();
                     $scope.SelectDefaultMedia();
@@ -25,14 +33,14 @@
                 };
 
                 $scope.DisplayWatched = function (state) {
-                    $scope.NowShowing = state;
+                    $scope.Flags.NowShowing = state;
                     $scope.ApplyFilters();
                     $scope.SelectDefaultMedia();
                 };
 
                 $scope.Filters = {
                     Watched: function (media) {
-                        switch ($scope.NowShowing) {
+                        switch ($scope.Flags.NowShowing) {
                             case "NotWatched":
                                 return !media.iswatched;
                             case "Watched":
@@ -42,13 +50,13 @@
                         }
                     },
                     Genres: function (media) {
-                        switch ($scope.SelectedGenre) {
+                        switch ($scope.Flags.SelectedGenre) {
                             case "All":
                                 return true;
                             case "No Category":
                                 return !media.metadata.genres || media.metadata.genres.length === 0;
                             default:
-                                return _(media.metadata.genres).includes($scope.SelectedGenre);
+                                return _(media.metadata.genres).includes($scope.Flags.SelectedGenre);
                         }
                     }
                 };
@@ -83,7 +91,7 @@
                         _.unset($scope.Filters, "Search");
                     }
                     else {
-                        var movies = SearchService.Search(text, MediaStore.AllMedia, "Title");
+                        var movies = SearchService.Flags.Search(text, MediaStore.AllMedia, $scope.Flags.SearchType || "");
                         $scope.Filters.Search = media => {
                             return _(movies).some(m => m.$$Folder.Path + m.filename === media.$$Folder.Path + media.filename);
                         };
@@ -124,12 +132,22 @@
                         .value();
                     $scope.Genres.unshift("All");
                     $scope.Genres.push("No Category");
-                    var selectedGenre = _($scope.Genres).find(g => g === $scope.SelectedGenre);
+                    var selectedGenre = _($scope.Genres).find(g => g === $scope.Flags.SelectedGenre);
                     if (selectedGenre)
-                        $scope.SelectedGenre = selectedGenre;
+                        $scope.Flags.SelectedGenre = selectedGenre;
                     else
-                        $scope.SelectedGenre = $scope.Genres[0];
+                        $scope.Flags.SelectedGenre = $scope.Genres[0];
                 };
+
+                $scope.Open = function ($event, media) {
+                   new require("open")(path.join(media.$$Folder.Path, media.filename));
+                };
+
+                $scope.OpenFolder = function ($event, media) {
+                    new require("open")(path.dirname(path.join(media.$$Folder.Path, media.filename)));
+                };
+
+
             }]);
 
 })();

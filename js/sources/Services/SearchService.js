@@ -66,7 +66,7 @@
                         Score: Score(GetSearchString[type].Get(m), keyword),
                         Media: m
                     };
-                }).filter(item => item.Score > 0.35)
+                }).filter(item => item.Score > 0.4)
                     .orderBy(["Score"], ["desc"])
                     .map(item => item.Media).value();
             };

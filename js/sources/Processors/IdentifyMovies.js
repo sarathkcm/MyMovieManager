@@ -16,6 +16,10 @@
             window.close();
         };
 
+        var reportProgress = function (media) {
+            const fromWindow = BrowserWindow.fromId(sourceWindowId);
+            fromWindow.webContents.send('identify-movies-progress', JSON.stringify(media));
+        };
         var GetJSONFromFile = function (fileName) {
             return JSON.parse(fs.readFileSync(fileName, 'utf8'));
         };
@@ -123,12 +127,15 @@
                 if (movie) {
                     if (!movie.metadata)
                         movie.metadata = {};
-                    _(movie.metadata).extend(mediaList[ind].metadata).value();
                     movie.isupdatedonce = mediaList[ind].isupdatedonce;
+                    movie.poster = mediaList[ind].poster;
+                    movie.postersmall = mediaList[ind].postersmall;
+                    _(movie.metadata).extend(mediaList[ind].metadata).value();
                 }
                 else {
                     allMedia.push(mediaList[ind]);
                 }
+                reportProgress(mediaList[ind]);
 
                 SaveJSONToFile(dataFilePath, allMedia);
             }

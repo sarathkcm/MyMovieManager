@@ -1,25 +1,25 @@
 <div class="btn-group">
-    <input class="input-box btn hBorder" type="text" ng-model="SearchText" ng-enter="Search(SearchText)" placeholder="Search for movies">
+    <input class="input-box btn hBorder" type="text" ng-model="Flags.SearchText" ng-enter="Search(SearchText)" placeholder="Search for movies">
 
-    <select class="select-box btn hBorder">
-                                <option>All</option>
-                                <option>Title</option>
-                                <option>Director</option>
-                                <option>Cast</option>
-                                <option>Plot</option>
-                                <option>Year</option>
-                                <option>Language</option>
-                                <option>Country</option>
+    <select class="select-box btn hBorder" ng-model="Flags.SearchType" ng-change="ApplyFilters()">
+                                <option value="">All</option>
+                                <option value="Title">Title</option>
+                                <option value="Director">Director</option>
+                                <option value="Cast">Cast</option>
+                                <option value="Plot">Plot</option>
+                                <option value="Year">Year</option>
+                                <option value="Language">Language</option>
+                                <option value="Country">Country</option>
                             </select>
 </div>
 
 <div class="btn-group">
-    <select class="select-box hBorder" ng-options="genre for genre in Genres" ng-model="SelectedGenre" style="width:120px">
+    <select class="select-box hBorder" ng-options="genre for genre in Genres" ng-model="Flags.SelectedGenre" style="width:120px" ng-change="ApplyFilters()">
                             </select>
 </div>
 
 <div class="btn-group">
-    <button class="btn btn-default" ng-click="DisplayWatched('All')" ng-class='NowShowing == "All"? "active":""'>All</button>
-    <button class="btn btn-default" ng-click="DisplayWatched('Watched')" ng-class='NowShowing == "Watched"? "active":""'>Watched</button>
-    <button class="btn btn-default" ng-click="DisplayWatched('NotWatched')" ng-class='NowShowing == "NotWatched"? "active":""'>Not Watched</button>
+    <button class="btn btn-default" ng-click="DisplayWatched('All')" ng-class='Flags.NowShowing == "All"? "active":""'>All</button>
+    <button class="btn btn-default" ng-click="DisplayWatched('Watched')" ng-class='Flags.NowShowing == "Watched"? "active":""'>Watched</button>
+    <button class="btn btn-default" ng-click="DisplayWatched('NotWatched')" ng-class='Flags.NowShowing == "NotWatched"? "active":""'>Not Watched</button>
 </div>

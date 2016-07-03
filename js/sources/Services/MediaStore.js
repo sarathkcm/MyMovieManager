@@ -40,6 +40,9 @@
                         if (!movie.metadata)
                             movie.metadata = {};
                         _(movie.metadata).extend(element.metadata).value();
+                        movie.isupdatedonce = element.isupdatedonce;
+                        movie.poster = element.poster;
+                        movie.postersmall = element.postersmall;
                     }
                     else {
                         Service.AllMedia.push(element);

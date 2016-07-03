@@ -1,4 +1,5 @@
 {
+    "IsFirstStart": true,
     "SupportedFileFormats": [
         ".mp4",
         ".mkv",
@@ -16,14 +17,14 @@
                     "routes.js",
                     "HomeController.js"
                 ],
-                "Controller":"Photon.MainController"
+                "Controller": "Photon.MainController"
             },
             "Native": {
                 "Page": "index.html",
                 "Scripts": [
                     "main.js"
                 ],
-                "Controller":"Photon.MainController"
+                "Controller": "Photon.MainController"
             }
         }
     }
