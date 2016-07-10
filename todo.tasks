@@ -10,3 +10,7 @@ Metadata:
     ☐ Try other APIs
     ☐ Standard JSON format for storing metadata
     ☐ While updating metadata instantly update the corresponding item in the grid through messaging. 
+	☐ Instead of storing locations in data.json, add a drive level file/folder in each drive and mention the folder paths within that drive which are added to MMM
+UI Features:
+	☐ Multi select movies and view
+	☐ Option to copy/move movie/movies selected to another location
