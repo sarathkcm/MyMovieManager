@@ -2,7 +2,9 @@
 Cross-platform Application for managing your movies and TV series.
 
 
-##### Please note that this project does not have any releases yet.
+##### [2019-06-28] This project is parked since a long time and probably won't be worked on any time in near future.
+
+![](screenshot.PNG)
 
 ## Developing
 
