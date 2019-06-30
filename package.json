@@ -22,7 +22,7 @@
     "angular-ui-router": "^0.3.0",
     "oclazyload":"^1.0.9",
     "string-score":"^1.0.1",
-    "open":"^0.0.5"
+    "open":">=6.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
